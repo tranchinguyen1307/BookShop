@@ -284,7 +284,7 @@
                             <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-sync-alt"></i></a>
                             <a class="btn btn-outline-dark btn-square" href="{{ route('product.show', ['id' => $product->id]) }}"><i class="fa fa-search"></i></a>
                         </div>
-                        
+
                     </div>
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="{{ route('product.show', ['id' => $product->id]) }}">
@@ -310,7 +310,7 @@
                 </div>
             </div>
         @endforeach
-        
+
         </div>
 
     </div>
@@ -363,7 +363,7 @@
                             <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-sync-alt"></i></a>
                             <a class="btn btn-outline-dark btn-square" href="{{ route('product.show', ['id' => $product->id]) }}"><i class="fa fa-search"></i></a>
                         </div>
-                        
+
                     </div>
                     <div class="text-center py-4">
                         <a class="h6 text-decoration-none text-truncate" href="{{ route('product.show', ['id' => $product->id]) }}">
@@ -433,7 +433,7 @@
     @push('scripts')
     <script src="{{ asset('client/js/ajax/cart.js') }}"></script>
     @endpush
-    
+
 
 
 @endsection
