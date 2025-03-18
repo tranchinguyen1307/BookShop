@@ -9,7 +9,6 @@
 
         <!-- Favicon -->
         <link href="{{ asset('client/img/favicon.ico') }}" rel="icon">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <!-- Google Web Fonts -->
         <link rel="preconnect" href="https://fonts.gstatic.com">
