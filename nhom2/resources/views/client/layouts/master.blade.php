@@ -22,7 +22,6 @@
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/5.2.6/js/fileinput.min.js"></script>
-
     <!-- Libraries Stylesheet -->
     <link href="{{ asset('client/lib/animate/animate.min.css') }}" rel="stylesheet">
     <link href="{{ asset('client/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
