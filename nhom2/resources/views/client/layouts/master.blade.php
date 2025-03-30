@@ -23,7 +23,7 @@
 
         <!-- Customized Bootstrap Stylesheet -->
         <link href="{{ asset('client/css/style.css') }}" rel="stylesheet">
-        @stack('style')
+        @stack('styles')
     </head>
     <body>
        <x-client.navbar/>
