@@ -7,18 +7,18 @@
 
         <!-- Toast Thông báo -->
         @if(session('success') || session('error'))
-        <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} mt-3" role="alert">
-            <strong>{{ session('success') ? 'Thành công!' : 'Thất bại!' }}</strong> 
-            {{ session('success') ?? session('error') }}
-        </div>
-    @endif
-    
+            <div class="alert {{ session('success') ? 'alert-success' : 'alert-danger' }} mt-3" role="alert">
+                <strong>{{ session('success') ? 'Thành công!' : 'Thất bại!' }}</strong>
+                {{ session('success') ?? session('error') }}
+            </div>
+        @endif
+
 
         <div class="row">
             <!-- Thông tin tài khoản -->
             <div class="col-md-6">
                 <div class="card p-4">
-                    
+
                     <h4>Thông Tin Cá Nhân</h4>
                     <form action="{{ route('account.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -33,7 +33,7 @@
                             </div>
                             <input type="file" name="image" accept="image/*" id="image-input">
                         </div>
-                        
+
                         <div class="form-group">
                             <label>Họ và Tên</label>
                             <input type="text" name="name" class="form-control" value="{{ auth()->user()->name }}">
@@ -46,7 +46,7 @@
                             <label>Địa chỉ</label>
                             <input type="text" name="address" class="form-control" value="{{ auth()->user()->address }}">
                         </div>
-                        
+
                         <button type="submit" class="btn btn-primary">Cập Nhật</button>
                     </form>
                 </div>
@@ -59,32 +59,32 @@
                         <h4>Đổi Mật Khẩu</h4>
                         <div class="dropdown ms-auto">
                             <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-gear"></i>
+                                <i class="fas fa-cog"></i>
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <form action="{{ route('account.destroy') }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản?');">
+                                    <form action="{{ route('account.destroy') }}" method="POST"
+                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản?');">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="dropdown-item text-danger">Xóa Tài Khoản</button>
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-trash-alt"></i> Xóa Tài Khoản
+                                        </button>
                                     </form>
                                 </li>
                             </ul>
                         </div>
-                        
-                    </div>
-                   
-              
 
+                    </div>
                     <form action="{{ route('account.changePassword') }}" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="form-group">
-                            
+
                             <label>Mật Khẩu Hiện Tại</label>
                             <input type="password" name="current_password" class="form-control">
-                            @error('current_password')  
+                            @error('current_password')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -111,5 +111,5 @@
             </div>
         </div>
     </div>
-          
+
 @endsection
