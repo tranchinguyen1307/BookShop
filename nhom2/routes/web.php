@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ProductDetailController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('client.pages.home');
-});
+Route::get('/', [HomeController::class,'index']);
+Route::get('/product/{id}',[ProductDetailController::class,'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
 });

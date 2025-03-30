@@ -18,6 +18,10 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Group;
+
 
 class ProductResource extends Resource
 {
@@ -31,48 +35,65 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->label('Tiêu đề')
-                    ->rules(['required', 'min:3', 'max:200']),
-                TextInput::make('author')
-                    ->label('Tác giả')
-                    ->rules(['required', 'min:3', 'max:200']),
-                TextInput::make('unit_price')
-                    ->label('Giá')
-                    ->rules(['required', 'numeric', 'min:1000'])
-                    ->suffix('VND')
-                    ->formatStateUsing(fn($state) => $state !== null ? intval($state) : ''), 
+                Grid::make(2)
+                    ->schema([
+                       Group::make()
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Tiêu đề')
+                                    ->rules(['required', 'min:3', 'max:200']),
+                                TextInput::make('unit_price')
+                                    ->label('Giá')
+                                    ->rules(['required', 'numeric', 'min:1000'])
+                                    ->suffix('VND')
+                                    ->formatStateUsing(fn($state) => $state !== null ? intval($state) : ''),
+                                Select::make('category_id')
+                                    ->label('Danh mục')
+                                    ->required()
+                                    ->relationship('category', 'name')
+                                    ->searchable()
+                                    ->preload(),
+                                RichEditor::make('short_description')
+                                    ->label('Mô tả ngắn')
+                                    ->rule(['required']),
+                                RichEditor::make('description')
+                                    ->label('Mô tả')
+                                    ->rule(['required']),
+                            ]),
 
-                TextInput::make('sale_price')
-                    ->label('Giá giảm')
-                    ->numeric()
-                    ->suffix('VND')
-                    ->formatStateUsing(fn($state) => $state !== null ? intval($state) : '') 
-                    ->rule(fn($get) => function (string $attribute, $value, $fail) use ($get) {
-                        $unitPrice = $get('unit_price');
-                        if ($value && $unitPrice && $value > $unitPrice) {
-                            $fail('Giá giảm không được lớn hơn giá gốc.');
-                        }
-                    }),
-
-
-
-
-                Select::make('category_id')
-                    ->label('Danh mục')
-                    ->required()
-                    ->relationship('category', 'name')
-                    ->searchable()
-                    ->preload(),
-                FileUpload::make('image')
-                    ->label('Hình ảnh')
-                    ->directory('products')
-                    ->rule(['required']),
-                RichEditor::make('description')
-                    ->label('Mô tả')
-                    ->rule(['required'])
-
-
+                        Group::make()
+                            ->schema([
+                                TextInput::make('author')
+                                    ->label('Tác giả')
+                                    ->rules(['required', 'min:3', 'max:200']),
+                                TextInput::make('sale_price')
+                                    ->label('Giá giảm')
+                                    ->numeric()
+                                    ->suffix('VND')
+                                    ->formatStateUsing(fn($state) => $state !== null ? intval($state) : '')
+                                    ->rule(fn($get) => function (string $attribute, $value, $fail) use ($get) {
+                                        $unitPrice = $get('unit_price');
+                                        if ($value && $unitPrice && $value > $unitPrice) {
+                                            $fail('Giá giảm không được lớn hơn giá gốc.');
+                                        }
+                                    }),
+                                FileUpload::make('image')
+                                    ->label('Hình ảnh')
+                                    ->directory('products')
+                                    ->rule(['required']),
+                                Repeater::make('images')
+                                    ->label('Album ảnh')
+                                    ->relationship('images')
+                                    ->schema([
+                                        FileUpload::make('image')
+                                            ->label('')
+                                            ->directory('products/albums')
+                                            ->image()
+                                            ->required(),
+                                    ])
+                                    ->collapsible(),
+                            ]),
+                    ]),
             ]);
     }
 

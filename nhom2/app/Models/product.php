@@ -15,12 +15,17 @@ class Product extends Model
         'sale_price',
         'image',
         'category_id',
-        'author'
+        'author',
+        'short_description',
     ];
 
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
-}
 
+    public function images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
+}
