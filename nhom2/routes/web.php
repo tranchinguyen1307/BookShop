@@ -8,6 +8,7 @@ use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\ForgotPasswordController;
 
 
+
 Route::get('/', [HomeController::class,'index']);
 Route::get('/product/{id}',[ProductDetailController::class,'show'])->name('product.show');
 Route::get('/contact', function () {
