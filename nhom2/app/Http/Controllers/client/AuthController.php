@@ -28,7 +28,7 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
-        return redirect()->route('dashboard')->with('success', 'Đăng ký thành công!');
+        return redirect()->route('home')->with('success', 'Đăng ký thành công!');
     }
 
     // Hiển thị trang đăng nhập
@@ -43,7 +43,7 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            return redirect()->route('dashboard')->with('success', 'Đăng nhập thành công!');
+            return redirect()->route('home')->with('success', 'Đăng nhập thành công!');
         }
 
         return back()->withErrors(['email' => 'Email hoặc mật khẩu không đúng!']);
