@@ -9,8 +9,8 @@ use App\Http\Controllers\client\ForgotPasswordController;
 
 
 
-Route::get('/', [HomeController::class,'index']);
-Route::get('/product/{id}',[ProductDetailController::class,'show'])->name('product.show');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
 });
@@ -26,8 +26,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function () {
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/account', [UserController::class, 'index'])->name('account');
     Route::put('/account/update', [UserController::class, 'update'])->name('account.update');
@@ -36,9 +34,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-
-
-
+// quên mật khẩukhẩu
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password.form');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('forgot-password.sendOtp');
 
