@@ -1,5 +1,5 @@
- <!-- Topbar Start -->
- <div class="container-fluid">
+<!-- Topbar Start -->
+<div class="container-fluid">
     <div class="row bg-secondary py-1 px-xl-5">
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
@@ -12,14 +12,26 @@
         <div class="col-lg-6 text-center text-lg-right">
             <div class="d-inline-flex align-items-center">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">Tài Khoản</button>
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">
+                        {{ auth()->check() ? auth()->user()->email : 'Tài Khoản' }}
+                    </button>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <button class="dropdown-item" type="button">Đăng nhập</button>
-                        <button class="dropdown-item" type="button">Đăng ký</button>
+                        @auth
+                            <a href="{{ route('account') }}" class="dropdown-item">Thông tin tài khoản</a>
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                @csrf
+                                <button type="submit" class="dropdown-item">Đăng xuất</button>
+                            </form>
+                        @else
+                            <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
+                            <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>
+                        @endauth
                     </div>
                 </div>
+
                 {{-- <div class="btn-group mx-2">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">USD</button>
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                        data-toggle="dropdown">USD</button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <button class="dropdown-item" type="button">EUR</button>
                         <button class="dropdown-item" type="button">GBP</button>
@@ -27,7 +39,8 @@
                     </div>
                 </div> --}}
                 {{-- <div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">EN</button>
+                    <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                        data-toggle="dropdown">EN</button>
                     <div class="dropdown-menu dropdown-menu-right">
                         <button class="dropdown-item" type="button">FR</button>
                         <button class="dropdown-item" type="button">AR</button>
@@ -38,11 +51,13 @@
             <div class="d-inline-flex align-items-center d-block d-lg-none">
                 <a href="" class="btn px-0 ml-2">
                     <i class="fas fa-heart text-dark"></i>
-                    <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                    <span class="badge text-dark border border-dark rounded-circle"
+                        style="padding-bottom: 2px;">0</span>
                 </a>
                 <a href="" class="btn px-0 ml-2">
                     <i class="fas fa-shopping-cart text-dark"></i>
-                    <span class="badge text-dark border border-dark rounded-circle" style="padding-bottom: 2px;">0</span>
+                    <span class="badge text-dark border border-dark rounded-circle"
+                        style="padding-bottom: 2px;">0</span>
                 </a>
             </div>
         </div>
@@ -79,14 +94,17 @@
 <div class="container-fluid bg-dark mb-30">
     <div class="row px-xl-5">
         <div class="col-lg-3 d-none d-lg-block">
-            <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
+            <a class="btn d-flex align-items-center justify-content-between bg-primary w-100" data-toggle="collapse"
+                href="#navbar-vertical" style="height: 65px; padding: 0 30px;">
                 <h6 class="text-dark m-0"><i class="fa fa-bars mr-2"></i>Danh mục</h6>
                 <i class="fa fa-angle-down text-dark"></i>
             </a>
-            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
+            <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
+                id="navbar-vertical" style="width: calc(100% - 30px); z-index: 999;">
                 <div class="navbar-nav w-100">
                     <div class="nav-item dropdown dropright">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i class="fa fa-angle-right float-right mt-1"></i></a>
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dresses <i
+                                class="fa fa-angle-right float-right mt-1"></i></a>
                         <div class="dropdown-menu position-absolute rounded-0 border-0 m-0">
                             <a href="" class="dropdown-item">Men's Dresses</a>
                             <a href="" class="dropdown-item">Women's Dresses</a>
@@ -119,7 +137,8 @@
                         <a href="index.html" class="nav-item nav-link active">Trang chủ</a>
                         <a href="shop.html" class="nav-item nav-link">Cửa hàng</a>
                         <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Bài viết <i class="fa fa-angle-down mt-1"></i></a>
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Bài viết <i
+                                    class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                 <a href="cart.html" class="dropdown-item">a</a>
                                 <a href="checkout.html" class="dropdown-item">b</a>
@@ -130,11 +149,13 @@
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <a href="" class="btn px-0">
                             <i class="fas fa-heart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            <span class="badge text-secondary border border-secondary rounded-circle"
+                                style="padding-bottom: 2px;">0</span>
                         </a>
                         <a href="" class="btn px-0 ml-3">
                             <i class="fas fa-shopping-cart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">0</span>
+                            <span class="badge text-secondary border border-secondary rounded-circle"
+                                style="padding-bottom: 2px;">0</span>
                         </a>
                     </div>
                 </div>

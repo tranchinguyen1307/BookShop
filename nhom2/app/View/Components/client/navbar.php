@@ -1,11 +1,10 @@
 <?php
-
 namespace App\View\Components\client;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-
+use Illuminate\Support\Facades\Auth;
 class navbar extends Component
 {
     /**
@@ -13,7 +12,7 @@ class navbar extends Component
      */
     public function __construct()
     {
-        //
+        $this->userEmail = Auth::check() ? Auth::user()->email : null;
     }
 
     /**
