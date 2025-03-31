@@ -73,7 +73,6 @@
                     position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
-                    background: rgba(255, 255, 255, 0.7);
                     border: none;
                     padding: 10px;
                     cursor: pointer;

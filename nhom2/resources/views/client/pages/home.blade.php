@@ -272,41 +272,45 @@
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Sản phẩm nổi bật</span></h2>
         <div class="row px-xl-5">
             @foreach ($recent_products as $product)
-                <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                    <div class="product-item bg-light mb-4">
-                        <div class="product-img position-relative overflow-hidden d-flex align-items-center justify-content-center" style="height: 250px;">
-                            <img class="img-fluid" src="{{ url('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-height: 100%; object-fit: contain; background-color: #f8f9fa;">
-                            <div class="product-action">
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                <a class="btn btn-outline-dark btn-square" href="{{ route('product.show', ['id' => $product->id]) }}"><i class="fa fa-search"></i></a>
-                            </div>
-                        </div>
-                        <div class="text-center py-4">
-                            <a class="h6 text-decoration-none text-truncate" href="{{ route('product.show', ['id' => $product->id]) }}">
-                                {{ $product->name }}
+            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden d-flex align-items-center justify-content-center" style="height: 250px;">
+                        <img class="img-fluid" src="{{ url('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-height: 100%; object-fit: contain; background-color: #f8f9fa;">
+                        <div class="product-action">
+                            <a href="#" class="btn btn-outline-dark btn-square add-to-cart" data-id="{{ $product->id }}">
+                                <i class="fa fa-shopping-cart"></i>
                             </a>
-                            <div class="d-flex align-items-center justify-content-center mt-2">
-                                @if ($product->sale_price)
-                                    <h5>{{ number_format($product->sale_price, 0, ',', '.') }}₫</h5>
-                                    <h6 class="text-muted ml-2"><del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del></h6>
-                                @else
-                                    <h5>{{ number_format($product->unit_price, 0, ',', '.') }}₫</h5>
-                                @endif
-                            </div>
-                            <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
-                            </div>
+                            <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-sync-alt"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="{{ route('product.show', ['id' => $product->id]) }}"><i class="fa fa-search"></i></a>
+                        </div>
+                        
+                    </div>
+                    <div class="text-center py-4">
+                        <a class="h6 text-decoration-none text-truncate" href="{{ route('product.show', ['id' => $product->id]) }}">
+                            {{ $product->name }}
+                        </a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            @if ($product->sale_price)
+                                <h5>{{ number_format($product->sale_price, 0, ',', '.') }}₫</h5>
+                                <h6 class="text-muted ml-2"><del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del></h6>
+                            @else
+                                <h5>{{ number_format($product->unit_price, 0, ',', '.') }}₫</h5>
+                            @endif
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small>(99)</small>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            </div>
+        @endforeach
+        
         </div>
 
     </div>
@@ -346,42 +350,46 @@
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Recent Products</span></h2>
         <div class="row px-xl-5">
             <div class="row px-xl-5">
-                @foreach ($recent_products as $product)
-                    <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
-                        <div class="product-item bg-light mb-4">
-                            <div class="product-img position-relative overflow-hidden d-flex align-items-center justify-content-center" style="height: 250px;">
-                                <img class="img-fluid" src="{{ url('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-height: 100%; object-fit: contain; background-color: #f8f9fa;">
-                                <div class="product-action">
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
-                                    <a class="btn btn-outline-dark btn-square" href="{{ route('product.show', ['id' => $product->id]) }}"><i class="fa fa-search"></i></a>
-                                </div>
-                            </div>
-                            <div class="text-center py-4">
-                                <a class="h6 text-decoration-none text-truncate" href="{{ route('product.show', ['id' => $product->id]) }}">
-                                    {{ $product->name }}
-                                </a>
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    @if ($product->sale_price)
-                                        <h5>{{ number_format($product->sale_price, 0, ',', '.') }}₫</h5>
-                                        <h6 class="text-muted ml-2"><del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del></h6>
-                                    @else
-                                        <h5>{{ number_format($product->unit_price, 0, ',', '.') }}₫</h5>
-                                    @endif
-                                </div>
-                                <div class="d-flex align-items-center justify-content-center mb-1">
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small class="fa fa-star text-primary mr-1"></small>
-                                    <small>(99)</small>
-                                </div>
-                            </div>
+             @foreach ($recent_products as $product)
+             <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+                <div class="product-item bg-light mb-4">
+                    <div class="product-img position-relative overflow-hidden d-flex align-items-center justify-content-center" style="height: 250px;">
+                        <img class="img-fluid" src="{{ url('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-height: 100%; object-fit: contain; background-color: #f8f9fa;">
+                        <div class="product-action">
+                            <a href="#" class="btn btn-outline-dark btn-square add-to-cart" data-id="{{ $product->id }}">
+                                <i class="fa fa-shopping-cart"></i>
+                            </a>
+                            <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-sync-alt"></i></a>
+                            <a class="btn btn-outline-dark btn-square" href="{{ route('product.show', ['id' => $product->id]) }}"><i class="fa fa-search"></i></a>
+                        </div>
+                        
+                    </div>
+                    <div class="text-center py-4">
+                        <a class="h6 text-decoration-none text-truncate" href="{{ route('product.show', ['id' => $product->id]) }}">
+                            {{ $product->name }}
+                        </a>
+                        <div class="d-flex align-items-center justify-content-center mt-2">
+                            @if ($product->sale_price)
+                                <h5>{{ number_format($product->sale_price, 0, ',', '.') }}₫</h5>
+                                <h6 class="text-muted ml-2"><del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del></h6>
+                            @else
+                                <h5>{{ number_format($product->unit_price, 0, ',', '.') }}₫</h5>
+                            @endif
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center mb-1">
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small class="fa fa-star text-primary mr-1"></small>
+                            <small>(99)</small>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            </div>
+           @endforeach
+
             </div>
         </div>
     </div>
@@ -422,5 +430,10 @@
         </div>
     </div>
     <!-- Vendor End -->
+    @push('scripts')
+    <script src="{{ asset('client/js/ajax/cart.js') }}"></script>
+    @endpush
+    
+
 
 @endsection
