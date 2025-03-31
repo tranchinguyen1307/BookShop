@@ -17,7 +17,7 @@
     <!-- Cart Start -->
     <div class="container-fluid">
         <div class="row px-xl-5">
-            <div class="col-lg-12 table-responsive mb-5">
+            <div class="col-lg-8 table-responsive mb-5">
                 <table class="table table-light table-borderless table-hover text-center mb-0">
                     <thead class="thead-dark">
                         <tr>
@@ -78,10 +78,34 @@
                             </tr>
                         @endforeach
                     </tbody>
-                    
                 </table>
             </div>
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3">
+                    <span class="bg-secondary pr-3">Tóm tắt giỏ hàng</span>
+                </h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="border-bottom pb-2">
+                        {{-- <div class="d-flex justify-content-between mb-3">
+                            <h6>Tạm tính</h6>
+                            <h6>{{ number_format($cartItems->sum(fn($item) => ($item->product->sale_price ?? $item->product->unit_price) * $item->quantity), 0, ',', '.') }}₫</h6>
+                        </div> --}}
+                        {{-- <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium">Phí vận chuyển</h6>
+                            <h6 class="font-weight-medium">0₫</h6>
+                        </div> --}}
+                    </div>
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5>Tổng cộng</h5>
+                            <h5 class="cart-total">{{ number_format($cartItems->sum(fn($item) => ($item->product->sale_price ?? $item->product->unit_price) * $item->quantity), 0, ',', '.') }}₫</h5>
+                        </div>
+                        <button class="btn btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
+                    </div>
+                </div>
+            </div>
         </div>
+        
     </div>
 
     @push('scripts')
