@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\client\AuthController;
 use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\ForgotPasswordController;
+use App\Http\Controllers\client\CartController;
 
 
-
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index']);
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
@@ -17,6 +17,12 @@ Route::get('/contact', function () {
 Route::get('/shop', function () {
     return view('client.pages.shop');
 });
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
+Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -26,6 +32,9 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/dashboard', function () {
+    return view('client.pages.home'); // Đây là trang sau khi đăng nhập thành công
+})->middleware('auth')->name('dashboard');
 Route::middleware(['auth'])->group(function () {
     Route::get('/account', [UserController::class, 'index'])->name('account');
     Route::put('/account/update', [UserController::class, 'update'])->name('account.update');
@@ -34,7 +43,9 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// quên mật khẩukhẩu
+
+
+
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password.form');
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('forgot-password.sendOtp');
 
