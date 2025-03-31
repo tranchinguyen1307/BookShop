@@ -32,7 +32,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function () {
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/account', [UserController::class, 'index'])->name('account');
