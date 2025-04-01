@@ -4,7 +4,7 @@
         <div class="col-lg-6 d-none d-lg-block">
             <div class="d-inline-flex align-items-center h-100">
                 <a class="text-body mr-3" href="">Giới thiệu</a>
-                <a class="text-body mr-3" href="">Liên Hệ</a>
+                <a class="text-body mr-3" href="{{ route('contact')}}">Liên Hệ</a>
                 <a class="text-body mr-3" href="">Trợ Giúp</a>
                 <a class="text-body mr-3" href="">FAQs</a>
             </div>
@@ -134,8 +134,8 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="index.html" class="nav-item nav-link active">Trang chủ</a>
-                        <a href="shop.html" class="nav-item nav-link">Cửa hàng</a>
+                        <a href="{{ route('home')}}" class="nav-item nav-link active">Trang chủ</a>
+                        <a href="{{ route('shop')}}" class="nav-item nav-link">Cửa hàng</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Bài viết <i
                                     class="fa fa-angle-down mt-1"></i></a>
@@ -144,7 +144,7 @@
                                 <a href="checkout.html" class="dropdown-item">b</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Liên hệ</a>
+                        <a href="{{ route('contact')}}" class="nav-item nav-link">Liên hệ</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                         <a href="" class="btn px-0">
@@ -152,10 +152,10 @@
                             <span class="badge text-secondary border border-secondary rounded-circle"
                                 style="padding-bottom: 2px;">0</span>
                         </a>
-                        <a href="" class="btn px-0 ml-3">
+                        <a href="{{ route('cart.index')}}" class="btn px-0 ml-3">
                             <i class="fas fa-shopping-cart text-primary"></i>
-                            <span class="badge text-secondary border border-secondary rounded-circle"
-                                style="padding-bottom: 2px;">0</span>
+                            <span class="badge text-secondary border border-secondary rounded-circle" id="cart-count"
+                                style="padding-bottom: 2px;">{{$cartCount}}</span>
                         </a>
                     </div>
                 </div>

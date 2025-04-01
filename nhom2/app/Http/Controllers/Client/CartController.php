@@ -62,8 +62,11 @@ class CartController extends Controller
 
         if ($cartItem) {
             $cartItem->update(["quantity" => $request->quantity]);
-
-            return response()->json(["success" => true]);
+            $cartCount = Cart::where("user_id", auth()->id())->sum("quantity");
+            return response()->json([
+                "success" => true,
+                "cart_count" => $cartCount,
+            ]);
         }
 
         return response()->json(["success" => false, "message" => "Không tìm thấy sản phẩm!"], 404);
