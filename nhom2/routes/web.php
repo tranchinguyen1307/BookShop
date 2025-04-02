@@ -7,9 +7,10 @@ use App\Http\Controllers\client\AuthController;
 use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\ForgotPasswordController;
 use App\Http\Controllers\client\CartController;
+use App\Http\Controllers\client\AddressController;
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
@@ -39,10 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/account/update', [UserController::class, 'update'])->name('account.update');
     Route::put('/account/changePassword', [UserController::class, 'changePassword'])->name('account.changePassword');
     Route::delete('/account/delete', [UserController::class, 'destroy'])->name('account.destroy');
+    Route::get('/account/confirm-delete', [UserController::class, 'confirmDelete'])->name('account.confirmDelete');
+    Route::resource('addresses', AddressController::class)->except(['show']);
 });
-
-
-
 
 
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password.form');
@@ -53,3 +53,5 @@ Route::post('/forgot-password/otp', [ForgotPasswordController::class, 'verifyOtp
 
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password.form');
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
+
+
