@@ -29,7 +29,6 @@ class ForgotPasswordController extends Controller
 
             // Xóa OTP cũ nếu có
             DB::table('password_reset_tokens')->where('email', $request->email)->delete();
-
             // Lưu OTP mới
             DB::table('password_reset_tokens')->insert([
                 'email' => $request->email,
