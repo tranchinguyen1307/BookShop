@@ -5,10 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\BlogResource\Pages;
 use App\Filament\Resources\BlogResource\RelationManagers;
 use App\Models\Blog;
+use App\Models\BlogCategory;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -33,9 +36,10 @@ class BlogResource extends Resource
                 TextInput::make('title')
                     ->label('Tiêu đề')
                     ->rules(['required', 'min:3', 'max:200']),
-                TextInput::make('author')
+                TextInput::make('user.name')
                     ->label('Tác giả')
-                    ->rules(['required', 'min:3', 'max:200']),
+                    ->default(auth()->user()->name)
+                    ->disabled(),
                 Select::make('blogcategory_id')
                     ->label('Danh mục bài viết')
                     ->required()
@@ -59,16 +63,22 @@ class BlogResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('title')
+                    ->searchable()
                     ->label('Tiêu đề'),
                 TextColumn::make('blogCategory.name')
                     ->label('Danh mục'),
-                TextColumn::make('author')
+                TextColumn::make('user.name')
                     ->label('Tác giả'),
                 ImageColumn::make('image')
                     ->label('Ảnh đại diện'),
             ])
             ->filters([
-                //
+                SelectFilter::make('blogcategory_id')
+                    ->label('Danh mục')
+                    ->options(BlogCategory::all()->pluck('name', 'id')),
+                SelectFilter::make('user_id')
+                    ->label('Tác giả')
+                    ->options(user::all()->pluck('name', 'id')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()

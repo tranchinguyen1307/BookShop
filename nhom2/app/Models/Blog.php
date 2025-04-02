@@ -13,7 +13,7 @@ class Blog extends Model
     protected $fillable =
         [
             'title',
-            'author',
+            'user_id',
             'content',
             'status',
             'blogcategory_id',
@@ -22,6 +22,10 @@ class Blog extends Model
     public function blogCategory(): BelongsTo
     {
         return $this->belongsTo(BlogCategory::class, 'blogcategory_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
 

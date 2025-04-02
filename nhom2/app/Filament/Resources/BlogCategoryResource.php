@@ -18,6 +18,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\Textarea;
+use function Laravel\Prompts\search;
 class BlogCategoryResource extends Resource
 {
     protected static ?string $model = BlogCategory::class;
@@ -43,9 +44,10 @@ class BlogCategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                ->searchable(),
                 TextColumn::make('description')
-                    ->html(),
+                ->html(),
             ])
             ->filters([
                 //
