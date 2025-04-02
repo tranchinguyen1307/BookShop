@@ -112,7 +112,6 @@ class UserController extends Controller
         return redirect('/')->with('success', 'Tài khoản đã bị xóa.');
     }
 
-
     public function confirmDelete()
     {
         return view('client.pages.confirm-delete');
