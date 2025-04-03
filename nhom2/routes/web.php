@@ -8,16 +8,14 @@ use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\ForgotPasswordController;
 use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\AddressController;
-
+use App\Http\Controllers\Client\ShopController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
 })->name('contact');
-Route::get('/shop', function () {
-    return view('client.pages.shop');
-})->name('shop');
+Route::get('/shop', [ShopController::class, 'index'] )->name('shop');
 Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/add', 'addToCart')->name('add');
