@@ -32,12 +32,10 @@ Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(Che
     Route::get('/', 'process')->name('index');
     Route::post('/', 'process')->name('process');
     Route::post('/store', 'storeOrder')->name('store');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
-    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
-    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
-});
+    Route::get('/thanks', 'thanks');
 
+});
+Route::post('checkout/payment-ipn', [CheckoutController::class,'handleIPN']);
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
