@@ -84,17 +84,13 @@ class ProductResource extends Resource
                                     ->label('Hình ảnh')
                                     ->directory('products')
                                     ->rule(['required']),
-                                Repeater::make('images')
+                                FileUpload::make('images')
                                     ->label('Album ảnh')
-                                    ->relationship('images')
-                                    ->schema([
-                                        FileUpload::make('image')
-                                            ->label('')
-                                            ->directory('products/albums')
-                                            ->image()
-                                            ->required(),
-                                    ])
-                                    ->collapsible(),
+                                    ->multiple()
+                                    ->directory('products/albums') 
+                                    ->image()
+                                    ->reorderable() // Cho phép kéo thả sắp xếp ảnh
+                                    ->preserveFilenames(),
                             ]),
                     ]),
             ]);

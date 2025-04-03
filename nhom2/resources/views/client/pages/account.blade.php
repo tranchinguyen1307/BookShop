@@ -31,7 +31,8 @@
                                     src="{{ auth()->user()->image ? asset('storage/' . auth()->user()->image) : asset('default-avatar.jpg') }}"
                                     style="width: 200px; height: 200px; object-fit: cover;">
                             </div>
-                            <input type="file" name="image" accept="image/*" id="image-input">
+                            <input type="file" name="image" accept="image/*" id="image-input"
+                                onchange="previewImage(event)">
                         </div>
 
                         <div class="form-group">
@@ -42,10 +43,7 @@
                             <label>Email</label>
                             <input type="email" class="form-control" value="{{ auth()->user()->email }}" disabled>
                         </div>
-                        <div class="form-group">
-                            <label>Địa chỉ</label>
-                            <input type="text" name="address" class="form-control" value="{{ auth()->user()->address }}">
-                        </div>
+
 
                         <button type="submit" class="btn btn-primary">Cập Nhật</button>
                     </form>
@@ -63,17 +61,22 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <form action="{{ route('account.destroy') }}" method="POST"
-                                        onsubmit="return confirm('Bạn có chắc chắn muốn xóa tài khoản?');">
+                                    <a href="{{ route('addresses.index') }}" class="dropdown-item">
+                                        <i class="fas fa-map-marker-alt"></i> Xem Địa Chỉ
+                                    </a>
+                                </li>
+                                <li>
+                                    <form action="{{ route('account.confirmDelete') }}" method="GET">
                                         @csrf
-                                        @method('DELETE')
                                         <button type="submit" class="dropdown-item text-danger">
                                             <i class="fas fa-trash-alt"></i> Xóa Tài Khoản
                                         </button>
                                     </form>
                                 </li>
+
                             </ul>
                         </div>
+
 
                     </div>
                     <form action="{{ route('account.changePassword') }}" method="POST">
@@ -111,5 +114,43 @@
             </div>
         </div>
     </div>
+    <!-- Modal Xác Nhận -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmDeleteModalLabel">Xác Nhận Xóa Tài Khoản</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="deleteAccountForm" action="{{ route('account.destroy') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
 
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Nhập mật khẩu của bạn</label>
+                            <input type="password" name="password" id="password" class="form-control" required>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-danger">Xác Nhận Xóa</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const preview = document.getElementById('preview-image');
+                preview.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
 @endsection

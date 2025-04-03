@@ -19,6 +19,7 @@ class User extends Authenticatable
         'address',
         'auth_provider',
         'auth_provider_id',
+        'role_id'
     ];
 
     protected $hidden = [
@@ -30,4 +31,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
 }

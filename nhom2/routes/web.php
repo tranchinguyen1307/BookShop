@@ -7,22 +7,23 @@ use App\Http\Controllers\client\AuthController;
 use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\ForgotPasswordController;
 use App\Http\Controllers\client\CartController;
+use App\Http\Controllers\client\AddressController;
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
-});
+})->name('contact');
 Route::get('/shop', function () {
     return view('client.pages.shop');
+})->name('shop');
+Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/add', 'addToCart')->name('add');
+    Route::post('/update', 'updateCart')->name('update');
+    Route::post('/remove', 'removeFromCart')->name('remove');
 });
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
-Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
-Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
-
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -39,10 +40,9 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/account/update', [UserController::class, 'update'])->name('account.update');
     Route::put('/account/changePassword', [UserController::class, 'changePassword'])->name('account.changePassword');
     Route::delete('/account/delete', [UserController::class, 'destroy'])->name('account.destroy');
+    Route::get('/account/confirm-delete', [UserController::class, 'confirmDelete'])->name('account.confirmDelete');
+    Route::resource('addresses', AddressController::class)->except(['show']);
 });
-
-
-
 
 
 Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('forgot-password.form');
@@ -53,3 +53,5 @@ Route::post('/forgot-password/otp', [ForgotPasswordController::class, 'verifyOtp
 
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password.form');
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
+
+

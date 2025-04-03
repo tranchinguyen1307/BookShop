@@ -1,10 +1,13 @@
 <?php
+
 namespace App\View\Components\client;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
+
 class navbar extends Component
 {
     /**
@@ -20,6 +23,15 @@ class navbar extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.client.navbar');
+        $cartCount = auth()->check()
+            ? Cart::where("user_id", auth()->id())->sum("quantity")
+            : 0;
+
+        return view(
+            'components.client.navbar',
+            [
+                'cartCount' => $cartCount
+            ]
+        );
     }
 }
