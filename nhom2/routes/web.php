@@ -8,7 +8,7 @@ use App\Http\Controllers\client\UserController;
 use App\Http\Controllers\client\ForgotPasswordController;
 use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\AddressController;
-
+use App\Http\Controllers\Client\CheckoutController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
@@ -23,6 +23,11 @@ Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartControl
     Route::post('/add', 'addToCart')->name('add');
     Route::post('/update', 'updateCart')->name('update');
     Route::post('/remove', 'removeFromCart')->name('remove');
+});
+Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(CheckoutController::class)->group(function () {
+    Route::get('/', 'process')->name('index');
+    Route::post('/', 'process')->name('process');
+
 });
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
