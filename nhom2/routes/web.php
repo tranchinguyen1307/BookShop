@@ -15,9 +15,7 @@ Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('pro
 Route::get('/contact', function () {
     return view('client.pages.contact');
 })->name('contact');
-Route::get('/shop', function () {
-    return view('client.pages.shop');
-})->name('shop');
+Route::get('/shop', [ShopController::class, 'index'] )->name('shop');
 Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/add', 'addToCart')->name('add');
