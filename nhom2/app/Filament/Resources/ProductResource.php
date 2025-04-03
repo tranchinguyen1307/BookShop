@@ -80,6 +80,10 @@ class ProductResource extends Resource
                                             $fail('Giá giảm không được lớn hơn giá gốc.');
                                         }
                                     }),
+                                TextInput::make('quantity')
+                                    ->label('Số lượng')
+                                    ->numeric()
+                                    ->rule('required'),
                                 FileUpload::make('image')
                                     ->label('Hình ảnh')
                                     ->directory('products')
@@ -87,7 +91,7 @@ class ProductResource extends Resource
                                 FileUpload::make('images')
                                     ->label('Album ảnh')
                                     ->multiple()
-                                    ->directory('products/albums') 
+                                    ->directory('products/albums')
                                     ->image()
                                     ->reorderable() // Cho phép kéo thả sắp xếp ảnh
                                     ->preserveFilenames(),
@@ -114,9 +118,9 @@ class ProductResource extends Resource
                     ->formatStateUsing(
                         fn($record) =>
                         $record->sale_price
-                        ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
+                            ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
                                <s style='color:green;'>" . number_format($record->unit_price) . " VND</s>"
-                        : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
+                            : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
 
                     )
                     ->html()

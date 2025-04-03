@@ -5,12 +5,20 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Cart;
 
 class ProductDetailController extends Controller
 {
     public function show($id)
     {
         $product = Product::findOrFail($id); 
+        $cartItem = Cart::where('user_id', auth()->id())
+                        ->where('product_id', $product->id)
+                        ->first();
+    
+        $quantityInCart = $cartItem ? $cartItem->quantity : 0; 
+        $maxQuantity = $product->quantity - $quantityInCart;
+
         $relatedProducts = Product::where('category_id', $product->category_id)
                               ->where('id', '!=', $product->id)
                               ->limit(6)
@@ -19,6 +27,7 @@ class ProductDetailController extends Controller
         [
             'product' => $product,
             'relatedProducts' => $relatedProducts,
+            'MaxQuantity'=> $maxQuantity
         ]); 
     }
     
