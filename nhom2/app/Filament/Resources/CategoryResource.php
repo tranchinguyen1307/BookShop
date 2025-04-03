@@ -50,7 +50,8 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('name')
+                    ->searchable(),
                 TextColumn::make('description')
                     ->html(),
                 ImageColumn::make('thumbnail')
@@ -58,7 +59,7 @@ class CategoryResource extends Resource
 
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

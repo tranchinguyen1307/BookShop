@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -21,6 +23,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Group;
+use Filament\Tables\Filters\SelectFilter;
 
 
 class ProductResource extends Resource
@@ -37,7 +40,7 @@ class ProductResource extends Resource
             ->schema([
                 Grid::make(2)
                     ->schema([
-                       Group::make()
+                        Group::make()
                             ->schema([
                                 TextInput::make('name')
                                     ->label('Tiêu đề')
@@ -98,7 +101,8 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Tiêu đề'),
+                    ->label('Tiêu đề')
+                    ->searchable(),
                 TextColumn::make('category.name')
                     ->label('Danh mục'),
                 TextColumn::make('author')
@@ -110,9 +114,9 @@ class ProductResource extends Resource
                     ->formatStateUsing(
                         fn($record) =>
                         $record->sale_price
-                            ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
+                        ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
                                <s style='color:green;'>" . number_format($record->unit_price) . " VND</s>"
-                            :   "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
+                        : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
 
                     )
                     ->html()
@@ -123,7 +127,12 @@ class ProductResource extends Resource
 
             ])
             ->filters([
-                //
+                SelectFilter::make('category_id')
+                    ->label('Danh mục')
+                    ->options(Category::all()->pluck('name', 'id')),
+                SelectFilter::make('author')
+                    ->label('Tác giả')
+                    ->options(Product::query()->distinct()->pluck('author', 'author'))
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
