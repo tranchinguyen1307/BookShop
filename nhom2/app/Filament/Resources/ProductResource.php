@@ -48,6 +48,7 @@ class ProductResource extends Resource
                                 TextInput::make('unit_price')
                                     ->label('Giá')
                                     ->rules(['required', 'numeric', 'min:1000'])
+                                    ->numeric()
                                     ->suffix('VND')
                                     ->formatStateUsing(fn($state) => $state !== null ? intval($state) : ''),
                                 Select::make('category_id')
@@ -87,7 +88,7 @@ class ProductResource extends Resource
                                 FileUpload::make('images')
                                     ->label('Album ảnh')
                                     ->multiple()
-                                    ->directory('products/albums') 
+                                    ->directory('products/albums')
                                     ->image()
                                     ->reorderable() // Cho phép kéo thả sắp xếp ảnh
                                     ->preserveFilenames(),

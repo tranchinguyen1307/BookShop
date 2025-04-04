@@ -141,7 +141,7 @@
                                     <img class="img-fluid w-100" src="{{ url('storage/' . $product->image) }}"
                                         alt="{{ $product->name }}" alt="">
                                     <div class="product-action">
-                                        <a class="btn btn-outline-dark btn-square" data-id="{{ $product->id }}"><i
+                                        <a class="btn btn-outline-dark btn-square add-to-cart" data-id="{{ $product->id }}"><i
                                                 class="fa fa-shopping-cart"></i></a>
                                         <a class="btn btn-outline-dark btn-square" href=""><i
                                                 class="far fa-heart"></i></a>
@@ -159,7 +159,8 @@
                                         @if ($product->sale_price)
                                             <h5>{{ number_format($product->sale_price, 0, ',', '.') }}₫</h5>
                                             <h6 class="text-muted ml-2">
-                                                <del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del></h6>
+                                                <del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del>
+                                            </h6>
                                         @else
                                             <h5>{{ number_format($product->unit_price, 0, ',', '.') }}₫</h5>
                                         @endif
@@ -176,23 +177,56 @@
                             </div>
                         </div>
                     @endforeach
-                    <div class="col-12">
-                        <nav>
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled"><a class="page-link" href="#">Previous</span></a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                    @if ($products->hasPages())
+                        <div class="col-12">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    {{-- Nút "Previous" --}}
+                                    @if ($products->onFirstPage())
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Trước</span>
+                                        </li>
+                                    @else
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $products->previousPageUrl() }}">Trước</a>
+                                        </li>
+                                    @endif
+
+                                    {{-- Các số trang --}}
+                                    @foreach ($products->links()->elements[0] as $page => $url)
+                                        @if ($page == $products->currentPage())
+                                            <li class="page-item active">
+                                                <span class="page-link">{{ $page }}</span>
+                                            </li>
+                                        @else
+                                            <li class="page-item">
+                                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+
+                                    {{-- Nút "Next" --}}
+                                    @if ($products->hasMorePages())
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ $products->nextPageUrl() }}">Sau</a>
+                                        </li>
+                                    @else
+                                        <li class="page-item disabled">
+                                            <span class="page-link">Sau</span>
+                                        </li>
+                                    @endif
+                                </ul>
+                            </nav>
+                        </div>
+                    @endif
+
                 </div>
             </div>
             <!-- Shop Product End -->
         </div>
     </div>
     <!-- Shop End -->
-
+    @push('scripts')
+    <script src="{{ asset('client/js/ajax/cart.js') }}"></script>
+    @endpush
 @endsection
