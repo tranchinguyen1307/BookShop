@@ -24,6 +24,7 @@ class CheckoutController extends Controller
 
         $shippingFee = $totalPrice > 300000 ? 0 : 30000;
 
+        $user = auth()->user();
 
         return view(
             'client.pages.checkout',
@@ -31,6 +32,7 @@ class CheckoutController extends Controller
                 'cartItems' => $cartItems,
                 'totalPrice' => $totalPrice,
                 'shippingFee' => $shippingFee,
+                'user' => $user,
             ]
         );
     }
