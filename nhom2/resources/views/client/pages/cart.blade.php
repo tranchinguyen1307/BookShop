@@ -53,8 +53,18 @@
                                     </td>
                                     <td class="align-middle">
                                         <div class="input-group input-group-sm mx-auto" style="width: 100px;">
+                                            <div class="input-group-prepend">
+                                                <a class="btn btn-primary btn-minus update-cart cart-minus" data-id="{{ $item->id }}">
+                                                    <i class="fa fa-minus"></i>
+                                                </a>
+                                            </div>
                                             <input type="number" class="form-control text-center quantity-input update-cart"
-                                                value="{{ $item->quantity }}" data-id="{{ $item->id }}" max="{{ $item->product->quantity }}">
+                                                value="{{ $item->quantity }}" data-id="{{ $item->id }}" max="{{ $item->product->quantity}}">
+                                            <div class="input-group-append">
+                                                <a class="btn btn-primary btn-plus update-cart cart-plus" data-id="{{ $item->id }}">
+                                                    <i class="fa fa-plus"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="align-middle">
