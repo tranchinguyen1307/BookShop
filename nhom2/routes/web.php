@@ -24,6 +24,10 @@ Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartControl
     Route::post('/update', 'updateCart')->name('update');
     Route::post('/remove', 'removeFromCart')->name('remove');
 });
+Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(CheckoutController::class)->group(function () {
+    Route::get('/', 'process')->name('index');
+    Route::post('/', 'process')->name('process');
+    Route::post('/store', 'storeOrder')->name('store');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
