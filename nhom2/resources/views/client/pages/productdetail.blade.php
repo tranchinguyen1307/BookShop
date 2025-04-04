@@ -7,11 +7,11 @@
             <div class="col-lg-5 mb-30">
                 <div id="product-carousel" class="position-relative w-100 bg-light d-flex align-items-center justify-content-center"
                 style="height: 500px;">
-               <img id="main-image" 
-                    src="{{ url('storage/' . $product->image) }}" 
+               <img id="main-image"
+                    src="{{ url('storage/' . $product->image) }}"
                     alt="Ảnh sản phẩm"
                     style="max-width: 100%; max-height: 100%; object-fit: contain;">
-               
+
                <!-- Mũi tên điều hướng -->
                <button id="prev-btn" class="carousel-control-prev" type="button">
                    <i class="fa fa-2x fa-angle-left text-dark"></i>
@@ -24,23 +24,23 @@
             <div id="thumbnails" class="d-flex overflow-hidden">
                 <!-- Thumbnail ảnh chính -->
                 <img class="thumb img-thumbnail active"
-                     src="{{ url('storage/' . $product->image) }}" 
-                     onclick="changeImage(0)" 
+                     src="{{ url('storage/' . $product->image) }}"
+                     onclick="changeImage(0)"
                      alt="Thumbnail">
-        
+
                 <!-- Thumbnail album -->
                 @foreach ($product->images as $key => $image)
                     <img class="thumb img-thumbnail"
-                         src="{{ url('storage/' . $image->image) }}" 
-                         onclick="changeImage({{ $key + 1 }})" 
+                         src="{{ url('storage/' . $image->image) }}"
+                         onclick="changeImage({{ $key + 1 }})"
                          alt="Thumbnail">
-                    
+
                 @endforeach
             </div>
         </div>
 
             </div>
-            
+
             <div class="col-lg-7 h-auto mb-30">
                 <div class="h-100 bg-light p-30">
                     <h3>{{$product->name}}</h3>
@@ -65,7 +65,7 @@
                     <div>
                      {!!$product->short_description!!}
                     </div>
-                   
+
                     <div class="d-flex align-items-center mb-4 pt-2 product-detail">
                         <div class="input-group quantity mr-3" style="width: 130px;">
                             <div class="input-group-btn">
@@ -252,7 +252,7 @@
         .thumb.active, .thumb:hover {
             border-color: #007bff;
         }
-    
+
         /* CSS mũi tên */
         .carousel-control-prev, .carousel-control-next {
             position: absolute;
@@ -267,7 +267,7 @@
         .carousel-control-next { right: 10px; }
     </style>
     @endpush
-    
+
     @push('scripts')
     <script>
         let images = [
@@ -277,35 +277,35 @@
             @endforeach
         ];
         let currentIndex = 0;
-    
+
         function changeImage(index) {
             currentIndex = index;
             document.getElementById('main-image').src = images[currentIndex];
             updateThumbnails();
         }
-    
+
         function updateThumbnails() {
             document.querySelectorAll('.thumb').forEach((img, i) => {
                 img.classList.toggle('active', i === currentIndex);
             });
         }
-    
+
         document.getElementById('prev-btn').addEventListener('click', function () {
             currentIndex = (currentIndex - 1 + images.length) % images.length;
             document.getElementById('main-image').src = images[currentIndex];
             updateThumbnails();
         });
-    
+
         document.getElementById('next-btn').addEventListener('click', function () {
             currentIndex = (currentIndex + 1) % images.length;
             document.getElementById('main-image').src = images[currentIndex];
             updateThumbnails();
         });
-    
+
         updateThumbnails();
     </script>
        <script src="{{ asset('client/js/ajax/cart.js') }}"></script>
     @endpush
- 
+
     <!-- Products End -->
 @endsection
