@@ -16,6 +16,7 @@ class Order extends Model
         'address',
         'payment_method',
         'status',
+        'order_code'
     ];
 
     public function user()
