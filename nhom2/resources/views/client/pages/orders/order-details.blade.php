@@ -8,7 +8,7 @@
             return match ((int) $status) {
                 0 => ['label' => 'Chờ xác nhận', 'class' => 'bg-warning text-dark'],
                 1 => ['label' => 'Đã xác nhận', 'class' => 'bg-info text-white'],
-                2 => ['label' => 'Đang chuẩn bị', 'class' => 'bg-primary'],
+                2 => ['label' => 'Đã thanh toán', 'class' => 'bg-primary'],
                 3 => ['label' => 'Hoàn tất', 'class' => 'bg-success'],
                 4 => ['label' => 'Đã hủy', 'class' => 'bg-danger'],
                 default => ['label' => 'Không rõ', 'class' => 'bg-secondary'],

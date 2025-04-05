@@ -35,7 +35,8 @@
                             @foreach ($cartItems as $item)
                                 <tr data-row="{{ $item->id }}">
                                     <td class="align-middle">
-                                        <input type="checkbox" name="selected_items[]" value="{{ $item->id }}" class="select-item">
+                                        <input type="checkbox" name="selected_items[]" value="{{ $item->id }}"
+                                            class="select-item">
                                     </td>
                                     <td class="align-middle d-flex align-items-center">
                                         <div class="d-flex align-items-center">
@@ -54,14 +55,17 @@
                                     <td class="align-middle">
                                         <div class="input-group input-group-sm mx-auto" style="width: 100px;">
                                             <div class="input-group-prepend">
-                                                <a class="btn btn-primary btn-minus update-cart cart-minus" data-id="{{ $item->id }}">
+                                                <a class="btn btn-primary btn-minus update-cart cart-minus"
+                                                    data-id="{{ $item->id }}">
                                                     <i class="fa fa-minus"></i>
                                                 </a>
                                             </div>
                                             <input type="number" class="form-control text-center quantity-input update-cart"
-                                                value="{{ $item->quantity }}" data-id="{{ $item->id }}" max="{{ $item->product->quantity}}">
+                                                value="{{ $item->quantity }}" data-id="{{ $item->id }}"
+                                                max="{{ $item->product->quantity}}">
                                             <div class="input-group-append">
-                                                <a class="btn btn-primary btn-plus update-cart cart-plus" data-id="{{ $item->id }}">
+                                                <a class="btn btn-primary btn-plus update-cart cart-plus"
+                                                    data-id="{{ $item->id }}">
                                                     <i class="fa fa-plus"></i>
                                                 </a>
                                             </div>
@@ -94,7 +98,8 @@
                                     {{ number_format($cartItems->sum(fn($item) => ($item->product->sale_price ?? $item->product->unit_price) * $item->quantity), 0, ',', '.') }}₫
                                 </h5>
                             </div>
-                            <button type="submit" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Thanh toán</button>
+                            <button type="submit" class="btn btn-block btn-primary font-weight-bold my-3 py-3">Thanh
+                                toán</button>
                         </div>
                     </div>
                 </div>
