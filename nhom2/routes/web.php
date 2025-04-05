@@ -10,13 +10,15 @@ use App\Http\Controllers\client\CartController;
 use App\Http\Controllers\client\AddressController;
 use App\Http\Controllers\Client\ShopController;
 use App\Http\Controllers\Client\CheckoutController;
+use App\Http\Controllers\Client\ShopController;
+use App\Http\Controllers\Auth\SocialLoginController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
 Route::get('/contact', function () {
     return view('client.pages.contact');
 })->name('contact');
-Route::get('/shop', [ShopController::class, 'index'] )->name('shop');
+Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/add', 'addToCart')->name('add');
@@ -27,8 +29,12 @@ Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(Che
     Route::get('/', 'process')->name('index');
     Route::post('/', 'process')->name('process');
     Route::post('/store', 'storeOrder')->name('store');
-
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
+    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
 });
+
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -59,4 +65,6 @@ Route::post('/forgot-password/otp', [ForgotPasswordController::class, 'verifyOtp
 Route::get('/reset-password', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset-password.form');
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('reset-password');
 
+Route::get('auth/google', [SocialLoginController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [SocialLoginController::class, 'handleGoogleCallback']);
 
