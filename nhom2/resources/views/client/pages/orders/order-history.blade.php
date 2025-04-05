@@ -8,7 +8,7 @@
             return match ((int) $status) {
                 0 => 'Chờ xác nhận',
                 1 => 'Đã xác nhận',
-                2 => 'Đang giao hàng',
+                2 => 'Đã thanh toán',
                 3 => 'Đã nhận hàng',
                 4 => 'Đã hủy',
                 default => 'Không rõ',
