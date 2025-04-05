@@ -68,8 +68,8 @@ class CheckoutController extends Controller
                 'shipping_fee' => $shippingFee,
                 'address' => $address,
                 'payment_method' => $paymentMethod,
-                'status' => 'pending',
-                'phone'  => $phone,
+                'status' => 0,
+                'phone' => $phone,
                 'order_code' => 'MDH-' . uniqid()
             ]);
 
@@ -100,7 +100,7 @@ class CheckoutController extends Controller
             $secretKey = env('MOMO_SECRET_KEY');
             $orderId = 'MDH-' . uniqid();
             $requestId = time() . "";
-            $amount =  $totalPrice + $shippingFee;
+            $amount = $totalPrice + $shippingFee;
             $orderInfo = "Thanh toán đơn hàng MoMo";
             $redirectUrl = env('MOMO_REDIRECT_URL');
             $ipnUrl = env('MOMO_IPN_URL');
@@ -190,7 +190,7 @@ class CheckoutController extends Controller
                 'user_id' => $user->id,
                 'total_price' => $totalPrice + $shippingFee,
                 'shipping_fee' => $shippingFee,
-                'status' => 'paid', // Đơn hàng đã thanh toán
+                'status' => 3, // Đơn hàng đã thanh toán
                 'address' => $address,
                 'payment_method' => 2, // Momo
                 'phone' => $phone,
