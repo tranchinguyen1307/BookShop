@@ -10,11 +10,16 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $recent_products = Product::all();
+        $recent_products = Product::limit(8)
+            ->get();
+        $sale_products = Product::whereNotNull('sale_price')
+            ->limit(8)
+            ->get();
         return view(
             'client.pages.home',
             [
-                'recent_products' => $recent_products
+                'recent_products' => $recent_products,
+                'sale_products' => $sale_products,
             ]
         );
     }

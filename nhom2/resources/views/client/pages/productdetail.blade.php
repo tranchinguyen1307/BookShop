@@ -121,6 +121,7 @@
                 updateThumbnails();
             </script>
             @endpush
+
             <div class="col-lg-7 h-auto mb-30">
                 <div class="h-100 bg-light p-30">
                     <h3>{{$product->name}}</h3>
@@ -146,22 +147,21 @@
                      {!!$product->short_description!!}
                     </div>
 
-                    <div class="d-flex align-items-center mb-4 pt-2">
+                    <div class="d-flex align-items-center mb-4 pt-2 product-detail">
                         <div class="input-group quantity mr-3" style="width: 130px;">
                             <div class="input-group-btn">
                                 <button class="btn btn-primary btn-minus">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
-                            <input type="text" class="form-control bg-secondary border-0 text-center" value="1">
+                            <input type="text" class="form-control bg-secondary border-0 text-center product-quantity" value="1" max='{{$MaxQuantity}}'>
                             <div class="input-group-btn">
-                                <button class="btn btn-primary btn-plus">
+                                <button class="btn btn-primary btn-plus product-plus">
                                     <i class="fa fa-plus"></i>
                                 </button>
                             </div>
                         </div>
-                        <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To
-                            Cart</button>
+                        <button class="btn btn-primary px-3  add-to-cart" data-id="{{ $product->id }}"><i class="fa fa-shopping-cart mr-1" ></i> Thêm vào giỏ hàng</button>
                     </div>
                     {{-- <div class="d-flex pt-2">
                         <strong class="text-dark mr-2">Share on:</strong>
@@ -272,7 +272,7 @@
                                         alt="{{ $relatedProduct->name }}"
                                         style="max-height: 100%; object-fit: contain; background-color: #f8f9fa;">
                                     <div class="product-action">
-                                        <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-shopping-cart"></i></a>
+                                        <a class="btn btn-outline-dark btn-square add-to-cart" data-id="{{$relatedProduct->id}}"><i class="fa fa-shopping-cart"></i></a>
                                         <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
                                         <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
                                         <a class="btn btn-outline-dark btn-square"
@@ -307,5 +307,86 @@
             </div>
         </div>
     </div>
+    @push('styles')
+    <style>
+        /* CSS thumbnail */
+        .thumbnail-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        #thumbnails {
+             display: flex;
+             justify-content: center; /* Căn giữa thumbnail */
+             overflow-x: auto;
+             white-space: nowrap;
+             padding: 10px 0;
+             cursor: grab;
+             scroll-behavior: smooth;}
+        .thumb {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: 0.3s;
+        }
+        .thumb.active, .thumb:hover {
+            border-color: #007bff;
+        }
+
+        /* CSS mũi tên */
+        .carousel-control-prev, .carousel-control-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        .carousel-control-prev { left: 10px; }
+        .carousel-control-next { right: 10px; }
+    </style>
+    @endpush
+
+    @push('scripts')
+    <script>
+        let images = [
+            "{{ url('storage/' . $product->image) }}",
+            @foreach ($product->images as $image)
+                "{{ url('storage/' . $image->image) }}",
+            @endforeach
+        ];
+        let currentIndex = 0;
+
+        function changeImage(index) {
+            currentIndex = index;
+            document.getElementById('main-image').src = images[currentIndex];
+            updateThumbnails();
+        }
+
+        function updateThumbnails() {
+            document.querySelectorAll('.thumb').forEach((img, i) => {
+                img.classList.toggle('active', i === currentIndex);
+            });
+        }
+
+        document.getElementById('prev-btn').addEventListener('click', function () {
+            currentIndex = (currentIndex - 1 + images.length) % images.length;
+            document.getElementById('main-image').src = images[currentIndex];
+            updateThumbnails();
+        });
+
+        document.getElementById('next-btn').addEventListener('click', function () {
+            currentIndex = (currentIndex + 1) % images.length;
+            document.getElementById('main-image').src = images[currentIndex];
+            updateThumbnails();
+        });
+
+        updateThumbnails();
+    </script>
+       <script src="{{ asset('client/js/ajax/cart.js') }}"></script>
+    @endpush
+
     <!-- Products End -->
 @endsection

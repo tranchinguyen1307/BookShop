@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -30,6 +31,16 @@ class CartController extends Controller
             ->where("product_id", $request->product_id)
             ->first();
 
+        $product = Product::findOrFail($request->product_id);
+        $quantityInCart = $cartItem ? $cartItem->quantity : 0;
+        $maxQuantity = $product->quantity - $quantityInCart;
+        
+            if ($request->quantity > $maxQuantity) {
+                return response()->json([
+                    "message" => "Số lượng sản phẩm bạn muốn thêm vượt quá số lượng còn lại trong kho",
+                ], 400);
+            }
+
         if ($cartItem) {
             $cartItem->increment("quantity", $quantity);
         } else {
@@ -45,6 +56,7 @@ class CartController extends Controller
         return response()->json([
             "message" => "Sản phẩm đã được thêm vào giỏ hàng!",
             "cart_count" => $cartCount,
+            "max_quantity" => $maxQuantity,
         ]);
     }
 
@@ -96,6 +108,7 @@ class CartController extends Controller
     public function index()
     {
         $cartItems = Cart::where("user_id", auth()->id())->with("product")->get();
+
         return view("client.pages.cart", ["cartItems" => $cartItems]);
     }
 }
