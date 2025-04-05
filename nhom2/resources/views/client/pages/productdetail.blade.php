@@ -262,6 +262,7 @@
             padding: 10px;
             cursor: pointer;
             z-index: 10;
+            background: none;
         }
         .carousel-control-prev { left: 10px; }
         .carousel-control-next { right: 10px; }

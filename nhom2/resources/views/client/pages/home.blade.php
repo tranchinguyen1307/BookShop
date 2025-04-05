@@ -628,5 +628,7 @@
         </div>
     </div>
     <!-- Vendor End -->
-
+    @push('scripts')
+        <script src="{{ asset('client/js/ajax/cart.js') }}"></script>
+    @endpush
 @endsection
