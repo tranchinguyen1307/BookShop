@@ -80,13 +80,22 @@ class UserController extends Controller
      */
     public function destroy(Request $request)
     {
+        // Xác thực mật khẩu người dùng
+        $request->validate([
+            'password' => 'required',
+        ]);
+
         $user = Auth::user();
+
+        // Kiểm tra mật khẩu hiện tại có đúng không
+        if (!Hash::check($request->password, $user->password)) {
+            return back()->withErrors(['password' => 'Mật khẩu không chính xác!']);
+        }
 
         // Kiểm tra nếu người dùng có role_id = 0 thì không được xóa
         if ($user->role_id == 0) {
             return back()->with('error', 'Tài khoản này không thể bị xóa.');
         }
-
 
         // Xóa ảnh đại diện nếu có
         if ($user->image) {
@@ -102,6 +111,7 @@ class UserController extends Controller
         // Chuyển hướng về trang chủ với thông báo
         return redirect('/')->with('success', 'Tài khoản đã bị xóa.');
     }
+
 
     public function confirmDelete()
     {
