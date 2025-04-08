@@ -68,6 +68,4 @@ class ShopController extends Controller
             'selectedCategories' => $request->input('category', []), // Đánh dấu các danh mục đã chọn
         ]);
     }
-
-
 }
