@@ -6,7 +6,10 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Models\Product;
 use App\Models\Cart;
+
 
 class navbar extends Component
 {
@@ -34,4 +37,41 @@ class navbar extends Component
             ]
         );
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $products = Product::where('name', 'like', "%$query%")
+            ->paginate(9); // nên phân trang để đồng bộ
+
+        // Lấy min và max giá để tạo khoảng giá
+        $minPrice = Product::whereNotNull('sale_price')->min('sale_price');
+        if ($minPrice === null) {
+            $minPrice = Product::min('unit_price');
+        }
+
+        $maxPrice = Product::whereNotNull('sale_price')->max('sale_price');
+        if ($maxPrice === null) {
+            $maxPrice = Product::max('unit_price');
+        }
+
+        $priceSteps = [];
+        $step = 50000;
+        for ($i = floor($minPrice / $step) * $step; $i < $maxPrice; $i += $step) {
+            $priceSteps[] = $i . '-' . ($i + $step);
+        }
+
+        $categories = \App\Models\Category::all();
+
+        return view('client.pages.shop', [
+            'products' => $products,
+            'query' => $query,
+            'priceSteps' => $priceSteps,
+            'categories' => $categories,
+            'selectedPrices' => [],
+            'selectedCategories' => [],
+        ]);
+    }
+
 }
