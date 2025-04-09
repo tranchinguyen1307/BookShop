@@ -18,7 +18,7 @@ class CheckoutController extends Controller
         if ($selectedItems) {
             session(['selected_items' => $selectedItems]);
         }
-      
+
         $id = session('selected_items', []);
         if (empty($id)) {
             return redirect()->back()->with('error', 'Vui lòng chọn sản phẩm để thanh toán!');
@@ -73,8 +73,8 @@ class CheckoutController extends Controller
             'shipping_fee' => $shippingFee,
             'address' => $address,
             'payment_method' => $paymentMethod,
-            'status' => 'pending',
-            'phone'  => $phone
+            'status' => 0,
+            'phone' => $phone
         ]);
 
         // Lưu chi tiết đơn hàng
@@ -93,7 +93,7 @@ class CheckoutController extends Controller
 
         }
 
-     
+
 
         // Xóa các sản phẩm đã thanh toán khỏi giỏ hàng
         Cart::whereIn('id', $selectedItems)->delete();
