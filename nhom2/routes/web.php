@@ -11,6 +11,8 @@ use App\Http\Controllers\client\AddressController;
 use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\ShopController;
 use App\Http\Controllers\Auth\SocialLoginController;
+use App\Http\Controllers\Client\OrderController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
@@ -67,3 +69,10 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 Route::get('auth/google', [SocialLoginController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [SocialLoginController::class, 'handleGoogleCallback']);
 
+
+Route::middleware('auth')->prefix('orders')->name('orders.')->group(function () {
+    Route::get('/history', [OrderController::class, 'history'])->name('history');
+    Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+
+});
+Route::put('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
