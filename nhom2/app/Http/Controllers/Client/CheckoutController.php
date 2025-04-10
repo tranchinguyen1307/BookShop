@@ -76,8 +76,8 @@ class CheckoutController extends Controller
             'shipping_fee' => $shippingFee,
             'address' => $address,
             'payment_method' => $paymentMethod,
-            'status' => 'pending',
-            'phone'  => $phone
+            'status' => 0,
+            'phone' => $phone
         ]);
 
         // Lưu chi tiết đơn hàng

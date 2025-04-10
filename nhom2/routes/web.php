@@ -35,7 +35,7 @@ Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(Che
     Route::get('/thanks', 'thanks');
 
 });
-Route::post('checkout/payment-ipn', [CheckoutController::class,'handleIPN']);
+Route::post('checkout/payment-ipn', [CheckoutController::class, 'handleIPN']);
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -69,3 +69,9 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 Route::get('auth/google', [SocialLoginController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [SocialLoginController::class, 'handleGoogleCallback']);
 
+Route::middleware('auth')->prefix('orders')->name('orders.')->group(function () {
+    Route::get('/history', [OrderController::class, 'history'])->name('history');
+    Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+
+});
+Route::put('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
