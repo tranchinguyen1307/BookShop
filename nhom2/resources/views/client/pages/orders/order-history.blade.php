@@ -65,6 +65,8 @@
                                         <p class="mb-1 text-danger fw-bold">💰 Tổng tiền:
                                             {{ number_format($order->total_price, 0, ',', '.') }}đ
                                         </p>
+                                        <p class="mb-1 text-muted"> Địa chỉ:
+                                            {{ $order->address }}</p>
                                     </div>
 
                                     <!-- Nút hành động -->
