@@ -10,8 +10,11 @@ use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
 use Livewire\Livewire;
+use App\Mail\OrderCancelledMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderResource extends Resource
 {
@@ -42,7 +45,6 @@ class OrderResource extends Resource
                             default => 'Không rõ',
                         };
                     }),
-
                 TextColumn::make('status')
                     ->label('Trạng thái')
                     ->badge()
@@ -50,7 +52,7 @@ class OrderResource extends Resource
                         $statusText = [
                             0 => 'Chờ xác nhận',
                             1 => 'Đã xác nhận',
-                            2 => 'Đang giao hàng',
+                            2 => 'Đã thanh toán ',
                             3 => 'Đã nhận hàng',
                             4 => 'Đã hủy',
                         ];
@@ -66,11 +68,10 @@ class OrderResource extends Resource
                         $statusOptions = [
                             0 => 'Chờ xác nhận',
                             1 => 'Đã xác nhận',
-                            2 => 'Đang giao hàng',
+                            2 => 'Đã thanh toán',
                             4 => 'Đã hủy',
                         ];
 
-                        // Chỉ hiển thị các trạng thái có giá trị lớn hơn trạng thái hiện tại
                         $filtered = collect($statusOptions)
                             ->filter(fn($label, $key) => $key > $record->status)
                             ->toArray();
@@ -79,12 +80,19 @@ class OrderResource extends Resource
                             Select::make('status')
                                 ->label('Trạng thái')
                                 ->options($filtered)
-                                ->required(),
+                                ->required()
+                                ->live(),
+
+                            Textarea::make('cancellation_reason')
+                                ->label('Lý do hủy đơn hàng')
+                                ->required()
+                                ->visible(fn($get) => $get('status') == 4),
                         ];
                     })
                     ->action(function (Order $order, array $data) {
                         $newStatus = (int) $data['status'];
 
+                        // Kiểm tra xem trạng thái mới có phải là trạng thái hợp lệ hay không
                         if ($newStatus <= $order->status) {
                             Notification::make()
                                 ->title('Không thể cập nhật trạng thái lùi lại hoặc giống nhau!')
@@ -93,28 +101,37 @@ class OrderResource extends Resource
                             return;
                         }
 
-                        // Cập nhật trạng thái
-                        $order->update(['status' => $newStatus]);
+                        $updateData = ['status' => $newStatus];
 
-                        // Nếu trạng thái là "Đã hủy", phát sự kiện Livewire từ component thực tế
-                        if ($newStatus === 4) {
-                            // Phát sự kiện Livewire tới tất cả các component đang nghe
-                            Livewire::emit('showCancelReasonModal', $order->id);
+                        if ($newStatus === 4) { // Nếu trạng thái là "Đã hủy"
+                            if ($order->status == 2) { // Kiểm tra nếu đơn hàng đã thanh toán
+                                Notification::make()
+                                    ->title('Không thể hủy đơn đã thanh toán!')
+                                    ->danger()
+                                    ->send();
+                                return;
+                            }
+
+                            // Cập nhật lý do hủy đơn hàng
+                            $updateData['cancellation_reason'] = $data['cancellation_reason'] ?? null;
+
+                            // Gửi email thông báo hủy đơn hàng
+                            Mail::to($order->user->email)->send(new OrderCancelledMail($order));
                         }
 
-                        // Giảm số lượng sản phẩm trong kho tương ứng với số lượng sản phẩm trong đơn hàng
-                        foreach ($order->orderDetails as $orderDetail) {
-                            $product = $orderDetail->product;
-                            $product->increment('quantity', $orderDetail->quantity); // Hoàn lại số lượng
-                        }
+                        // Cập nhật trạng thái đơn hàng
+                        $order->update($updateData);
 
+                        // Thông báo thành công
                         Notification::make()
                             ->title('Cập nhật trạng thái thành công!')
                             ->success()
                             ->send();
                     }),
+
             ]);
     }
+
 
     public static function getRelations(): array
     {
