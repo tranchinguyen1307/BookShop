@@ -9,7 +9,7 @@
                 0 => ['label' => 'Chờ xác nhận', 'class' => 'bg-warning text-dark'],
                 1 => ['label' => 'Đã xác nhận', 'class' => 'bg-info text-white'],
                 2 => ['label' => 'Đã thanh toán', 'class' => 'bg-primary'],
-                3 => ['label' => 'Hoàn tất', 'class' => 'bg-success'],
+                3 => ['label' => 'Đã nhận hàng ', 'class' => 'bg-success'],
                 4 => ['label' => 'Đã hủy', 'class' => 'bg-danger'],
                 default => ['label' => 'Không rõ', 'class' => 'bg-secondary'],
             };
@@ -49,11 +49,26 @@
             </div>
         @endforeach
 
-        <div class="text-end mt-4">
-            <h5>Tổng cộng:
-                <span class="text-danger">{{ number_format($order->total_price, 0, ',', '.') }}đ</span>
-            </h5>
-            <a href="{{ route('orders.history') }}" class="btn btn-secondary mt-2">← Quay lại lịch sử</a>
+        <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h5>Tổng cộng:
+                    <span class="text-danger">{{ number_format($order->total_price, 0, ',', '.') }}đ</span>
+                </h5>
+                <a href="{{ route('orders.history') }}" class="btn btn-secondary mt-2">← Quay lại lịch sử</a>
+            </div>
+
+            @if (in_array($order->status, [1, 2]))
+                <form action="{{ route('orders.receive', $order->id) }}" method="POST" class="mt-2">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success">Xác nhận đã nhận hàng</button>
+                </form>
+            @endif
         </div>
+
+
+
+
+
     </div>
 @endsection
