@@ -75,3 +75,4 @@ Route::middleware('auth')->prefix('orders')->name('orders.')->group(function () 
 
 });
 Route::put('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::put('/orders/{order}/receive', [OrderController::class, 'markAsReceived'])->name('orders.receive');
