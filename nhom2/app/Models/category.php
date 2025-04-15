@@ -9,13 +9,17 @@ use Illuminate\Notifications\Notifiable;
 
 class Category extends Model
 {
-      /** @use HasFactory<\Database\Factories\UserFactory> */
-      use HasFactory, Notifiable;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
     protected $fillable =
-    [
-        'name',
-        'description',
-        'status',
-        'thumbnail'
-    ];
+        [
+            'name',
+            'description',
+            'status',
+            'thumbnail'
+        ];
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
 }
