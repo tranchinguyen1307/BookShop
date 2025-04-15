@@ -175,6 +175,7 @@
                                         class="form-control " placeholder="Số nhà, tên đường">
                                         @error('detail_address') <p class="text-danger">{{ $message }}</p> @enderror
                                 </div>
+                                <input type="hidden" name="address" id="address">
                             @endif
                         </div>
                     </div>

@@ -22,6 +22,7 @@
                                 @csrf
                                 <button type="submit" class="dropdown-item">Đăng xuất</button>
                             </form>
+                            <a href="{{ route('orders.history') }}" class="dropdown-item">Xem đơn hàng</a>
                         @else
                             <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
                             <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>

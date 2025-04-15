@@ -77,19 +77,18 @@ class AddressController extends Controller
     }
 
     // Xóa địa chỉ
-    public function destroy(Request $request)
+    public function destroy(Request $request, Address $address)
     {
-        $request->validate([
-            'password' => 'required',
-        ]);
-
-        if (!Hash::check($request->password, auth()->user()->password)) {
-            return back()->withErrors(['password' => 'Mật khẩu không chính xác!']);
+        // Kiểm tra nếu địa chỉ thuộc về người dùng hiện tại
+        if ($address->user_id !== Auth::id()) {
+            abort(403); // Nếu địa chỉ không phải của người dùng, trả về lỗi
         }
 
-        $user = auth()->user();
-        $user->delete();
+        // Xóa địa chỉ
+        $address->delete();
 
-        return redirect('/')->with('success', 'Tài khoản đã được xóa thành công.');
+        return redirect()->back()->with('success', 'Địa chỉ đã được xóa thành công.');
     }
+
+
 }

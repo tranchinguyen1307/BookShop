@@ -12,6 +12,7 @@ use App\Models\Cart;
 use App\Models\BlogCategory;
 use App\Models\Category;
 
+
 class navbar extends Component
 {
     /**

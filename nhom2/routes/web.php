@@ -13,6 +13,8 @@ use App\Http\Controllers\Client\CheckoutController;
 use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\View\Components\client\navbar;
+use App\Http\Controllers\Client\OrderController;
+
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('product.show');
@@ -33,12 +35,10 @@ Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(Che
     Route::get('/', 'process')->name('index');
     Route::post('/', 'process')->name('process');
     Route::post('/store', 'storeOrder')->name('store');
-    Route::get('/cart', [CartController::class, 'index'])->name('cart.index')->middleware('auth');
-    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth');
-    Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
-    Route::post('/cart/remove', [CartController::class, 'removeFromCart'])->name('cart.remove');
-});
+    Route::get('/thanks', 'thanks');
 
+});
+Route::post('checkout/payment-ipn', [CheckoutController::class, 'handleIPN']);
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
@@ -72,3 +72,10 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 Route::get('auth/google', [SocialLoginController::class, 'redirectToGoogle'])->name('google.login');
 Route::get('auth/google/callback', [SocialLoginController::class, 'handleGoogleCallback']);
 
+Route::middleware('auth')->prefix('orders')->name('orders.')->group(function () {
+    Route::get('/history', [OrderController::class, 'history'])->name('history');
+    Route::get('/{id}', [OrderController::class, 'show'])->name('show');
+
+});
+Route::put('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+Route::put('/orders/{order}/receive', [OrderController::class, 'markAsReceived'])->name('orders.receive');
