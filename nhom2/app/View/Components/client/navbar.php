@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Cart;
-
+use App\Models\BlogCategory;
+use App\Models\Category;
 
 class navbar extends Component
 {
@@ -29,14 +30,19 @@ class navbar extends Component
         $cartCount = auth()->check()
             ? Cart::where("user_id", auth()->id())->sum("quantity")
             : 0;
-
+        $Categories = Category::all();
+        $blogCategories = BlogCategory::all();
         return view(
             'components.client.navbar',
             [
-                'cartCount' => $cartCount
+                'cartCount' => $cartCount,
+                'blogCategories' => $blogCategories,
+                'Categories' => $Categories
             ]
         );
     }
+
+
 
     public function search(Request $request)
     {

@@ -17,12 +17,17 @@ class CreateProduct extends CreateRecord
         if (!empty($data['images'])) {
             foreach ($data['images'] as $image) {
                 $record->images()->create([
-                    'image' => $image, 
+                    'image' => $image,
                 ]);
             }
         }
 
         return $record;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index'); // về trang danh sách
     }
 }
 
