@@ -21,7 +21,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\Select;
-
+use Filament\Forms\Components\Hidden;
 
 class BlogResource extends Resource
 {
@@ -40,6 +40,8 @@ class BlogResource extends Resource
                     ->label('Tác giả')
                     ->default(auth()->user()->name)
                     ->disabled(),
+                Hidden::make('user_id')
+                    ->default(auth()->user()->id),
                 Select::make('blogcategory_id')
                     ->label('Danh mục bài viết')
                     ->required()
