@@ -27,12 +27,7 @@
                             {{ $order->payment_method == 1 ? 'Thanh toán khi nhận hàng' : 'MoMo' }}
                         </td>
                     </tr>
-                    <tr>
-                        <th class="bg-gray-100 p-3 font-medium text-gray-700">Tổng giá</th>
-                        <td class="p-3 text-red-600 font-semibold">
-                            {{ number_format($order->total_price) }} VND
-                        </td>
-                    </tr>
+
                     <tr>
                         <th class="bg-gray-100 p-3 font-medium text-gray-700">Trạng thái</th>
                         <td class="p-3 text-blue-600 font-semibold">
@@ -54,37 +49,46 @@
         </div>
 
         <h3 class="text-xl font-semibold text-gray-800 mt-10 mb-4">📦 Sản phẩm trong đơn</h3>
-
         <div class="card bg-white shadow-lg rounded-lg p-6">
             <div class="space-y-4">
                 @foreach ($order->orderDetails as $detail)
-                    <div
-                        class="bg-gray-50 p-4 shadow rounded-lg flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <!-- Hình ảnh sản phẩm -->
-                        <div class="flex items-center gap-4">
+                    <div class="bg-gray-50 p-4 shadow rounded-lg flex items-center justify-between gap-6">
+                        <!-- Hình ảnh -->
+                        <div class="flex-shrink-0">
                             <img src="{{ asset('storage/' . $detail->product->image) }}" alt="{{ $detail->product->name }}"
-                                class="w-16 h-16 object-cover rounded-md"> <!-- Đổi kích thước hình ảnh -->
-                            <div>
-                                <h4 class="text-lg font-bold text-gray-800">{{ $detail->product->name }}</h4>
-                                <p class="text-sm text-gray-600">Số lượng: <span
-                                        class="font-medium">{{ $detail->quantity }}</span></p>
-                                <p class="text-sm text-gray-600">Đơn giá: <span
-                                        class="font-medium">{{ number_format($detail->price) }} VND</span></p>
-                            </div>
+                                class="w-16 h-16 object-cover rounded-md">
                         </div>
 
-                        <!-- Thành tiền -->
-                        <div class="text-right md:text-center">
-                            <p class="text-green-600 font-semibold">
-                                Thành tiền:<br>
+                        <!-- Thông tin sản phẩm -->
+                        <div class="flex-1 flex items-center justify-between gap-6">
+                            <div class="min-w-[180px]">
+                                <h4 class="text-md font-bold text-gray-800 truncate">{{ $detail->product->name }}</h4>
+                                <div class="text-sm text-gray-600">
+                                    SL: <span class="font-medium text-gray-800">{{ $detail->quantity }}</span><br>
+                                    Giá: <span class="font-medium text-gray-800">{{ number_format($detail->price) }}
+                                        VND</span>
+                                </div>
+                            </div>
+
+                            <!-- Thành tiền -->
+                            <div class="text-green-600 font-semibold whitespace-nowrap text-right">
                                 {{ number_format($detail->price * $detail->quantity) }} VND
-                            </p>
+                            </div>
                         </div>
                     </div>
                 @endforeach
             </div>
-        </div>
 
+            <!-- Tổng tiền -->
+            <div class="mt-6 border-t pt-4 flex justify-end items-center">
+                <div class="text-right">
+                    <div class="text-gray-600 text-sm font-medium">Tổng giá</div>
+                    <div class="text-2xl font-bold text-red-600">
+                        {{ number_format($order->total_price) }} VND
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </x-filament::page>
