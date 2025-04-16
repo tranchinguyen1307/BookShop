@@ -34,4 +34,8 @@ class Product extends Model
     {
         return Attribute::get(fn() => $this->images->pluck('image')->toArray());
     }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'product_id');
+    }
 }

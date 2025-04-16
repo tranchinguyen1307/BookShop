@@ -26,6 +26,12 @@ class OrderController extends Controller
     public function show($id)
     {
         $order = auth()->user()->orders()->with('orderDetails.product')->findOrFail($id);
+        foreach ($order->orderDetails as $item) {
+            $item->alreadyReviewed = $item->product->reviews()
+                ->where('user_id', auth()->id())
+                ->where('order_id', $order->id)
+                ->exists();
+        }
         return view('client.pages.orders.order-details', compact('order'));
     }
     public function cancel(Order $order)

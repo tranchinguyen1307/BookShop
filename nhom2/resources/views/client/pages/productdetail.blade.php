@@ -46,15 +46,20 @@
                     <h3>{{$product->name}}</h3>
                     <div class="d-flex mb-3">
                         <div class="text-primary mr-2">
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star-half-alt"></small>
-                            <small class="far fa-star"></small>
+                            @for ($i = 1; $i <= 5; $i++)
+                                @if ($rating >= $i)
+                                    <small class="fas fa-star"></small>
+                                @elseif ($rating >= ($i - 0.5))
+                                    <small class="fas fa-star-half-alt"></small> 
+                                @else
+                                    <small class="far fa-star"></small> 
+                                @endif
+                            @endfor
                         </div>
-                        <small class="pt-1">(99 Reviews)</small>
+                        <small class="pt-1">({{ $totalReviews }} Đánh giá)</small>
                     </div>
-                    <h3 class="font-weight-semi-bold mb-4">
+                    
+                    <h3 class="font-weight-semi-bold mb-1">
                         @if ($product->sale_price)
                             {{ number_format($product->sale_price, 0, ',', '.') }}₫
                             <small class="text-muted"><del>{{ number_format($product->unit_price, 0, ',', '.') }}₫</del></small>
@@ -62,9 +67,19 @@
                             {{ number_format($product->unit_price, 0, ',', '.') }}₫
                         @endif
                     </h3>
-                    <div>
-                     {!!$product->short_description!!}
+                    <div class="m-0">
+                        <p class="mb-2">
+                            <strong>Số lượng:</strong> <span class="text-muted">{{$product->quantity}}</span>
+                        </p>
+                        <p class="mb-2">
+                            <strong>Thể loại:</strong> <span class="text-muted">{{$product->category->name}}</span>
+                        </p>
+                        <p class="mb-3">
+                            <strong>Mô tả:</strong>
+                            <span>{!!$product->short_description!!}</span>
+                        </p>
                     </div>
+                    
 
                     <div class="d-flex align-items-center mb-4 pt-2 product-detail">
                         <div class="input-group quantity mr-3" style="width: 130px;">
@@ -107,7 +122,7 @@
                 <div class="bg-light p-30">
                     <div class="nav nav-tabs mb-4">
                         <a class="nav-item nav-link text-dark active" data-toggle="tab" href="#tab-pane-1">Mô tả</a>
-                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Đánh giá (0)</a>
+                        <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-3">Đánh giá </a>
                     </div>
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-pane-1">
@@ -116,55 +131,9 @@
 
                         <div class="tab-pane fade" id="tab-pane-3">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <h4 class="mb-4">1 review for "Product Name"</h4>
-                                    <div class="media mb-4">
-                                        <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1"
-                                            style="width: 45px;">
-                                        <div class="media-body">
-                                            <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                            <div class="text-primary mb-2">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
-                                            <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
-                                                et no at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4 class="mb-4">Leave a review</h4>
-                                    <small>Your email address will not be published. Required fields are marked *</small>
-                                    <div class="d-flex my-3">
-                                        <p class="mb-0 mr-2">Your Rating * :</p>
-                                        <div class="text-primary">
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="message">Your Review *</label>
-                                            <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="name">Your Name *</label>
-                                            <input type="text" class="form-control" id="name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Your Email *</label>
-                                            <input type="email" class="form-control" id="email">
-                                        </div>
-                                        <div class="form-group mb-0">
-                                            <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                        </div>
-                                    </form>
+                                <div class="col-md-12">
+                                    <h4 class="mb-4">Đánh giá cho sản phẩm "{{$product->name}}"</h4>
+                                    @livewire('product-review', ['productId' => $product->id])
                                 </div>
                             </div>
                         </div>
@@ -173,10 +142,6 @@
             </div>
         </div>
     </div>
-    <!-- Shop Detail End -->
-
-
-    <!-- Products Start -->
     <div class="container-fluid py-5">
         <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Cùng thể loại</span></h2>
         <div class="row px-xl-5">
