@@ -19,7 +19,7 @@
     @endphp
 
     <div class="container mt-4">
-        <h4>Chi tiết đơn hàng #{{ $order->id }}</h4>
+        <h4>Chi tiết đơn hàng #{{ $order->order_code }}</h4>
 
         @foreach($order->orderDetails as $item)
             <div class="card mb-3 p-3 shadow-sm">
@@ -57,11 +57,21 @@
                 </div>
             </div>
         @endforeach
-        <div class="text-end mt-4">
-            <h5>Tổng cộng:
-                <span class="text-danger">{{ number_format($order->total_price, 0, ',', '.') }}đ</span>
-            </h5>
-            <a href="{{ route('orders.history') }}" class="btn btn-secondary mt-2">← Quay lại lịch sử</a>
+        <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+                <h5>Tổng cộng:
+                    <span class="text-danger">{{ number_format($order->total_price, 0, ',', '.') }}đ</span>
+                </h5>
+                <a href="{{ route('orders.history') }}" class="btn btn-secondary mt-2">← Quay lại lịch sử</a>
+            </div>
+
+            @if (in_array($order->status, [1, 2]))
+                <form action="{{ route('orders.receive', $order->id) }}" method="POST" class="mt-2">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success">Xác nhận đã nhận hàng</button>
+                </form>
+            @endif
         </div>
     </div>
     <!-- Modal đánh giá -->

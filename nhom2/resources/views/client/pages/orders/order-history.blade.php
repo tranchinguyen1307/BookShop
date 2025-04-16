@@ -59,7 +59,7 @@
 
                                     <!-- Thông tin đơn hàng -->
                                     <div class="col-md-7">
-                                        <h5>Đơn hàng #{{ $order->id }}</h5>
+                                        <h5>Đơn hàng #{{ $order->order_code }}</h5>
                                         <p class="mb-1 text-muted">🗓 Ngày đặt:
                                             {{ $order->created_at->format('d/m/Y H:i') }}</p>
                                         <p class="mb-1 text-danger fw-bold">💰 Tổng tiền:
