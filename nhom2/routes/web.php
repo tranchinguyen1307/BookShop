@@ -15,6 +15,7 @@ use App\Http\Controllers\Client\BlogController;
 use App\Http\Controllers\Auth\SocialLoginController;
 use App\View\Components\client\navbar;
 use App\Http\Controllers\Client\OrderController;
+use App\Http\Controllers\Client\BlogDetailController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -25,7 +26,7 @@ Route::get('/contact', function () {
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/search', [navbar::class, 'search'])->name('search');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
-
+Route::get('/blog/{id}', [BlogDetailController::class, 'show'])->name('blog.show');
 Route::middleware('auth')->prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/add', 'addToCart')->name('add');

@@ -10,7 +10,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $recent_products = Product::limit(8)
+        $recent_products = Product::orderBy('created_at', 'desc')
+            ->limit(8)
             ->get();
         $sale_products = Product::whereNotNull('sale_price')
             ->limit(8)
