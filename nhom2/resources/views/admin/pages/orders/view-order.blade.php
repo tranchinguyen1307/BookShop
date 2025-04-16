@@ -7,7 +7,7 @@
                 <tbody class="divide-y divide-gray-200">
                     <tr>
                         <th class="bg-gray-100 w-1/4 p-3 font-medium text-gray-700">ID đơn hàng</th>
-                        <td class="p-3">{{ $order->id }}</td>
+                        <td class="p-3">{{ $order->order_code }}</td>
                     </tr>
                     <tr>
                         <th class="bg-gray-100 p-3 font-medium text-gray-700">Khách hàng</th>
