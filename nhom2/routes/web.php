@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ProductDetailController;
+use App\Http\Controllers\Client\ReviewController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\client\AuthController;
 use App\Http\Controllers\client\UserController;
@@ -36,6 +37,10 @@ Route::middleware('auth')->prefix('checkout')->name('checkout.')->controller(Che
 
 });
 Route::post('checkout/payment-ipn', [CheckoutController::class, 'handleIPN']);
+
+Route::middleware('auth')->prefix('review')->name('review.')->controller(ReviewController::class)->group(function () {
+    Route::post('/add', 'store')->name('store');
+});
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
