@@ -24,7 +24,7 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
     protected static ?string $label = 'Danh mục';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-tag';
 
     public static function form(Form $form): Form
     {
@@ -43,7 +43,8 @@ class CategoryResource extends Resource
                     ->required()
                     ->label('Hình ảnh danh mục')
             ])
-            ->columns(1);;
+            ->columns(1);
+        ;
     }
 
     public static function table(Table $table): Table

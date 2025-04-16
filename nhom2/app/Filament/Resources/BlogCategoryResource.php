@@ -23,21 +23,22 @@ class BlogCategoryResource extends Resource
 {
     protected static ?string $model = BlogCategory::class;
     protected static ?string $label = 'Danh mục bài viết';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-date-range';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
-                ->label('Tên danh mục bài viết')
-                ->rules(['required','min:3', 'max:200']),
+                    ->label('Tên danh mục bài viết')
+                    ->rules(['required', 'min:3', 'max:200']),
 
                 Textarea::make('description')
-                ->label('Mô tả danh mục bài viết')
-                ->rules(['required','min:3', 'max:200'])
+                    ->label('Mô tả danh mục bài viết')
+                    ->rules(['required', 'min:3', 'max:200'])
             ])
-            ->columns(1);;
+            ->columns(1);
+        ;
     }
 
     public static function table(Table $table): Table
@@ -45,9 +46,9 @@ class BlogCategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->searchable(),
+                    ->searchable(),
                 TextColumn::make('description')
-                ->html(),
+                    ->html(),
             ])
             ->filters([
                 //
