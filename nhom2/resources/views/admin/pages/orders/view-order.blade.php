@@ -15,7 +15,7 @@
                     </tr>
                     <tr>
                         <th class="bg-gray-100 p-3 font-medium text-gray-700">Số điện thoại: </th>
-                        <td class="p-3">{{ $order->user->phone }}</td>
+                        <td class="p-3">{{ $order->phone }}</td>
                     </tr>
                     <tr>
                         <th class="bg-gray-100 p-3 font-medium text-gray-700">Địa chỉ</th>
