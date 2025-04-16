@@ -92,9 +92,9 @@ class UserController extends Controller
             return back()->withErrors(['password' => 'Mật khẩu không chính xác!']);
         }
 
-        // Kiểm tra nếu người dùng có role_id = 0 thì không được xóa
+        // Ngăn chặn xóa tài khoản admin (role_id = 0)
         if ($user->role_id == 0) {
-            return back()->with('error', 'Tài khoản này không thể bị xóa.');
+            return back()->with('error', 'Tài khoản admin không thể bị xóa.');
         }
 
         // Xóa ảnh đại diện nếu có
@@ -111,6 +111,7 @@ class UserController extends Controller
         // Chuyển hướng về trang chủ với thông báo
         return redirect('/')->with('success', 'Tài khoản đã bị xóa.');
     }
+
 
     public function confirmDelete()
     {
