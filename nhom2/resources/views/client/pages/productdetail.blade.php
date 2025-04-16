@@ -71,6 +71,11 @@
                         <p class="mb-2">
                             <strong>Số lượng:</strong> <span class="text-muted">{{$product->quantity}}</span>
                         </p>
+
+                        <p class="mb-2">
+                            <strong>Tác giả:</strong> <span class="text-muted">{{$product->author}}</span>
+                        </p>
+
                         <p class="mb-2">
                             <strong>Thể loại:</strong> <span class="text-muted">{{$product->category->name}}</span>
                         </p>
