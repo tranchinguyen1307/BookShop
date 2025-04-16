@@ -73,7 +73,7 @@ class AddressController extends Controller
 
         $address->update(['address' => $request->address]);
 
-        return redirect()->route('client.pages.addresses.index')->with('success', 'Cập nhật địa chỉ thành công!');
+        return redirect()->route('addresses.index')->with('success', 'Cập nhật địa chỉ thành công!');
     }
 
     // Xóa địa chỉ
