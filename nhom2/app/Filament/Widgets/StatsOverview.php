@@ -27,22 +27,28 @@ class StatsOverview extends BaseWidget
         // Doanh thu
         $revenueThisMonth = Order::whereMonth('created_at', $now->month)
             ->whereYear('created_at', $now->year)
+            ->where('status', 3)
             ->sum('total_price');
 
         $revenueLastMonth = Order::whereMonth('created_at', $lastMonth->month)
             ->whereYear('created_at', $lastMonth->year)
+            ->where('status', 3)
             ->sum('total_price');
+
 
         // Sản phẩm đã bán
         $productsThisMonth = OrderDetail::whereHas('order', function ($query) use ($now) {
             $query->whereMonth('created_at', $now->month)
-                ->whereYear('created_at', $now->year);
+                ->whereYear('created_at', $now->year)
+                ->where('status', 3); 
         })->sum('quantity');
 
         $productsLastMonth = OrderDetail::whereHas('order', function ($query) use ($lastMonth) {
             $query->whereMonth('created_at', $lastMonth->month)
-                ->whereYear('created_at', $lastMonth->year);
+                ->whereYear('created_at', $lastMonth->year)
+                ->where('status', 3); 
         })->sum('quantity');
+
 
         // So sánh
         $compare = function ($current, $previous) {
@@ -71,19 +77,19 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make('Tổng đơn hàng', $ordersThisMonth)
                 ->icon('heroicon-o-receipt-percent')
-                ->description('So với tháng trước '.$orderCompare['change'] . '%')
+                ->description('So với tháng trước ' . $orderCompare['change'] . '%')
                 ->descriptionIcon('heroicon-m-' . $orderCompare['direction'])
                 ->descriptionColor($orderCompare['color']),
 
             Stat::make('Doanh thu', number_format($revenueThisMonth, 0, ',', '.') . ' đ')
                 ->icon('heroicon-o-banknotes')
-                ->description('So với tháng trước '.$revenueCompare['change'] . '%')
+                ->description('So với tháng trước ' . $revenueCompare['change'] . '%')
                 ->descriptionIcon('heroicon-m-' . $revenueCompare['direction'])
                 ->descriptionColor($revenueCompare['color']),
 
             Stat::make('Sản phẩm đã bán', $productsThisMonth)
                 ->icon('heroicon-o-shopping-cart')
-                ->description('So với tháng trước ' .$productCompare['change'] . '%')
+                ->description('So với tháng trước ' . $productCompare['change'] . '%')
                 ->descriptionIcon('heroicon-m-' . $productCompare['direction'])
                 ->descriptionColor($productCompare['color']),
         ];

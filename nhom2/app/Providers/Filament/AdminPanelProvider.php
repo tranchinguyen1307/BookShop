@@ -41,8 +41,10 @@ class AdminPanelProvider extends PanelProvider
                 // Widgets\AccountWidget::class,
                 \App\Filament\Widgets\StatsOverview::class,
                 \App\Filament\Widgets\UserChart::class,
-                \App\Filament\Widgets\ProductChart::class,
-                // \App\Filament\Widgets\ProductCategoryChart::class,
+                \App\Filament\Widgets\RevenueChart::class,
+                \App\Filament\Widgets\OrderChart::class,
+                \App\Filament\Widgets\LatestUsers::class,
+                
 
             ])
             ->middleware([
