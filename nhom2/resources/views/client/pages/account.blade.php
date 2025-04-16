@@ -60,11 +60,7 @@
                                 <i class="fas fa-cog"></i>
                             </button>
                             <ul class="dropdown-menu">
-                                <li>
-                                    <a href="{{ route('addresses.index') }}" class="dropdown-item">
-                                        <i class="fas fa-map-marker-alt"></i> Xem Địa Chỉ
-                                    </a>
-                                </li>
+
                                 <li>
                                     <form action="{{ route('account.confirmDelete') }}" method="GET">
                                         @csrf

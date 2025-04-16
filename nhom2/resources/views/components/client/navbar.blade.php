@@ -17,12 +17,25 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right">
                         @auth
-                            <a href="{{ route('account') }}" class="dropdown-item">Thông tin tài khoản</a>
+                            <a href="{{ route('account') }}" class="dropdown-item">
+                                <i class="fas fa-user me-2"></i> Thông tin tài khoản
+                            </a>
+
+                            <a href="{{ route('orders.history') }}" class="dropdown-item">
+                                <i class="fas fa-box me-2"></i> Xem đơn hàng
+                            </a>
+
+                            <a href="{{ route('addresses.index') }}" class="dropdown-item">
+                                <i class="fas fa-map-marker-alt me-2"></i> Xem Địa Chỉ
+                            </a>
+
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">
                                 @csrf
-                                <button type="submit" class="dropdown-item">Đăng xuất</button>
+                                <button type="submit" class="dropdown-item">
+                                    <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                                </button>
                             </form>
-                            <a href="{{ route('orders.history') }}" class="dropdown-item">Xem đơn hàng</a>
+
                         @else
                             <a href="{{ route('login') }}" class="dropdown-item">Đăng nhập</a>
                             <a href="{{ route('register') }}" class="dropdown-item">Đăng ký</a>
@@ -129,9 +142,9 @@
                                 viết <i class="fa fa-angle-down mt-1"></i></a>
                             <div class="dropdown-menu rounded-0 border-0 m-0"
                                 style="max-height: 300px; overflow-y: auto;">
-                                    <a href="{{ route('blog') }}" class="dropdown-item">
-                                        Tất cả
-                                    </a>
+                                <a href="{{ route('blog') }}" class="dropdown-item">
+                                    Tất cả
+                                </a>
                                 @foreach ($blogCategories as $category)
                                     <a href="" class="dropdown-item">
                                         {{ $category->name }}
