@@ -9,17 +9,17 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Product extends Model
 {
     protected $fillable =
-    [
-        'name',
-        'description',
-        'unit_price',
-        'sale_price',
-        'image',
-        'category_id',
-        'author',
-        'short_description',
-        'quantity'
-    ];
+        [
+            'name',
+            'description',
+            'unit_price',
+            'sale_price',
+            'image',
+            'category_id',
+            'author',
+            'short_description',
+            'quantity'
+        ];
 
     public function category(): BelongsTo
     {
@@ -38,4 +38,9 @@ class Product extends Model
     {
         return $this->hasMany(Review::class, 'product_id');
     }
+    public function orderDetails()
+    {
+        return $this->hasMany(OrderDetail::class);
+    }
+
 }
