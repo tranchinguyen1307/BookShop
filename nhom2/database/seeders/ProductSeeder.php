@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -19,7 +18,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Nguyễn Văn A',
                 'unit_price' => 150000,
                 'sale_price' => 120000,
-                'image' => 'books/php.jpg',
+                'image' => 'products/hinh_1.webp',
                 'category_id' => 1,
                 'quantity' => 50,
             ],
@@ -31,7 +30,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Lê Thị B',
                 'unit_price' => 180000,
                 'sale_price' => 150000,
-                'image' => 'books/javascript.jpg',
+                'image' => 'products/hinh_2.jpg',
                 'category_id' => 1,
                 'quantity' => 40,
             ],
@@ -43,7 +42,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Trần Văn C',
                 'unit_price' => 200000,
                 'sale_price' => 170000,
-                'image' => 'books/laravel.jpg',
+                'image' => 'products/hinh_3.jpg',
                 'category_id' => 1,
                 'quantity' => 60,
             ],
@@ -55,7 +54,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Robert C. Martin',
                 'unit_price' => 220000,
                 'sale_price' => 200000,
-                'image' => 'books/cleancode.jpg',
+                'image' => 'products/hinh_4.webp',
                 'category_id' => 2,
                 'quantity' => 30,
             ],
@@ -67,7 +66,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Nguyễn Thị D',
                 'unit_price' => 170000,
                 'sale_price' => 150000,
-                'image' => 'books/database.jpg',
+                'image' => 'products/hinh_5.jpg',
                 'category_id' => 2,
                 'quantity' => 45,
             ],
@@ -79,7 +78,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Phạm Văn E',
                 'unit_price' => 190000,
                 'sale_price' => 160000,
-                'image' => 'books/react.jpg',
+                'image' => 'products/hinh_6.webp',
                 'category_id' => 1,
                 'quantity' => 35,
             ],
@@ -91,7 +90,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Trịnh Văn F',
                 'unit_price' => 160000,
                 'sale_price' => 130000,
-                'image' => 'books/algorithm.jpg',
+                'image' => 'products/hinh_7.webp',
                 'category_id' => 3,
                 'quantity' => 25,
             ],
@@ -103,7 +102,7 @@ class ProductSeeder extends Seeder
                 'author' => 'Lưu Thị G',
                 'unit_price' => 140000,
                 'sale_price' => 110000,
-                'image' => 'books/softskill.jpg',
+                'image' => 'products/hinh_8.jpg',
                 'category_id' => 3,
                 'quantity' => 20,
             ],
