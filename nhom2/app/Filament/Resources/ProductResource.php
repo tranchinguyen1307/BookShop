@@ -32,7 +32,7 @@ class ProductResource extends Resource
 
 
     protected static ?string $label = 'Sản phẩm';
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
 
     public static function form(Form $form): Form
     {
@@ -119,9 +119,9 @@ class ProductResource extends Resource
                     ->formatStateUsing(
                         fn($record) =>
                         $record->sale_price
-                            ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
+                        ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
                                <s style='color:green;'>" . number_format($record->unit_price) . " VND</s>"
-                            : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
+                        : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
 
                     )
                     ->html()

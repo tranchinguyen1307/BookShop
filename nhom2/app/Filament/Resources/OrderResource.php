@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Mail;
 class OrderResource extends Resource
 {
     protected static ?string $model = Order::class;
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     protected static ?string $navigationLabel = 'Quản lý Đơn hàng';
     protected static ?string $modelLabel = 'Đơn hàng';
 
