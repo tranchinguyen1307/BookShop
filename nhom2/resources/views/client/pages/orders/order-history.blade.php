@@ -78,19 +78,53 @@
                                             </a>
 
                                             @if ($order->status == 0)
-                                                <form action="{{ route('orders.cancel', $order->id) }}" method="POST"
-                                                    onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng này không?')">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" class="btn btn-outline-danger">
-                                                        Hủy đơn hàng
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#cancelOrderModal{{ $order->id }}">
+                                                    Hủy đơn hàng
+                                                </button>
                                             @endif
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
+                            <!-- Modal Hủy đơn hàng -->
+                            <div class="modal fade" id="cancelOrderModal{{ $order->id }}" tabindex="-1"
+                                aria-labelledby="cancelOrderModalLabel{{ $order->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelOrderModalLabel{{ $order->id }}">Hủy đơn hàng #{{ $order->order_code }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('orders.cancel', $order->id) }}" method="POST" id="cancelForm{{ $order->id }}">
+                                                @csrf
+                                                @method('PUT')
 
+                                                <div class="mb-3">
+                                                    <label for="cancellation_reason" class="form-label">Lý do hủy đơn hàng</label>
+                                                    <select name="cancellation_reason" id="cancellation_reason{{ $order->id }}" class="form-select">
+                                                        <option value="">Chọn lý do</option>
+                                                        <option value="Tôi muốn đổi địa chỉ">Tôi muốn đổi địa chỉ </option>
+                                                        <option value="Tôi không muốn mua">Tôi không muốn mua </option>
+                                                        <option value="Tôi muốn mua cái khác">Tôi muốn mua cái khác </option>
+                                                        <option value="Khác">Khác</option>
+                                                    </select>
+                                                </div>
+
+                                                <!-- Lý do khác -->
+                                                <div class="mb-3" id="otherReasonDiv{{ $order->id }}" style="display: none;">
+                                                    <label for="other_reason{{ $order->id }}" class="form-label">Vui lòng nhập lý do khác</label>
+                                                    <textarea name="other_reason" id="other_reason{{ $order->id }}" class="form-control" rows="3"></textarea>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
+                                        </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
@@ -98,7 +132,23 @@
                 </div>
             @endforeach
         </div>
-
-
     </div>
+
+    <!-- JavaScript để xử lý hiển thị lý do -->
+    <script>
+        // Hiển thị ô nhập lý do khi chọn "Khác"
+        document.querySelectorAll('.form-select').forEach(function(select) {
+            select.addEventListener('change', function() {
+                var otherReasonDiv = this.closest('.modal-content').querySelector('.mb-3#otherReasonDiv');
+                var otherReason = this.value;
+
+                if (otherReason === "Other") {
+                    otherReasonDiv.style.display = 'block';
+                } else {
+                    otherReasonDiv.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
 @endsection

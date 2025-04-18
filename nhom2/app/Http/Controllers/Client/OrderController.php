@@ -36,15 +36,23 @@ class OrderController extends Controller
         return view('client.pages.orders.order-details', compact('order'));
     }
 
-    public function cancel(Order $order)
+    public function cancel(Order $order, Request $request)
     {
         // Kiểm tra trạng thái đơn hàng
         if ($order->status == 0) {
+            // Kiểm tra nếu có lý do hủy được gửi lên
+            $validatedData = $request->validate([
+                'cancellation_reason' => 'required|string|max:255',
+            ]);
+
             // Sử dụng transaction để đảm bảo tính nhất quán
             DB::beginTransaction();
             try {
                 // Cập nhật trạng thái đơn hàng thành đã hủy (status = 4)
                 $order->status = 4;
+
+                // Lưu lý do hủy vào cơ sở dữ liệu
+                $order->cancellation_reason = $validatedData['cancellation_reason'];
 
                 // Duyệt qua từng chi tiết đơn hàng (order_details) để hoàn lại số lượng
                 foreach ($order->orderDetails as $detail) {
@@ -68,6 +76,7 @@ class OrderController extends Controller
 
         return redirect()->back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
     }
+
 
 
 
