@@ -19,12 +19,11 @@
     <div class="container-fluid">
         <div class="row px-xl-5">
             <!-- Chi tiết bài viết -->
-            <div class="col-lg-8 mb-4">
+            <div class="col-lg-9 mb-4">
                 <div class="bg-white p-4 shadow-sm rounded">
                     <h3 class="mb-3">{{ $blog->title }}</h3>
                     <p class="text-muted small mb-3">Đăng ngày: {{ $blog->created_at->format('d/m/Y') }}</p>
-                    <img src="{{ url('storage/' . $blog->image) }}" class="img-fluid rounded mb-4"
-                        alt="{{ $blog->title }}">
+                    <img src="{{ url('storage/' . $blog->image) }}" class="img-fluid rounded mb-4" alt="{{ $blog->title }}">
                     <div class="blog-content">
                         {!! $blog->content !!}
                     </div>
@@ -54,13 +53,13 @@
                     <h6 class="mb-3">Các bình luận trước</h6>
 
 
-                        <div class="mb-3">
-                            <strong></strong>
-                            <small class="text-muted d-block"></small>
-                            <p class="mb-0"></p>
-                        </div>
+                    <div class="mb-3">
+                        <strong></strong>
+                        <small class="text-muted d-block"></small>
+                        <p class="mb-0"></p>
+                    </div>
 
-                        <p class="text-muted">Chưa có bình luận nào.</p>
+                    <p class="text-muted">Chưa có bình luận nào.</p>
 
                 </div>
 
@@ -68,7 +67,7 @@
 
 
             <!-- Bài viết cùng danh mục -->
-            <div class="col-lg-4 mb-4">
+            <div class="col-lg-3 mb-4">
                 <div class="bg-light p-4 rounded shadow-sm">
                     <h5 class="text-uppercase mb-3">Bài viết cùng danh mục</h5>
                     <ul class="list-unstyled">
