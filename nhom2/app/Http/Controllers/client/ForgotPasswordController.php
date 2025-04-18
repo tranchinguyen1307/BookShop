@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\client\ResetPasswordRequest;
-use App\Http\Requests\client\VerifyOtpRequest;
-use App\Http\Requests\client\SendOtpRequest;
+use App\Http\Requests\Client\ResetPasswordRequest;
+use App\Http\Requests\Client\VerifyOtpRequest;
+use App\Http\Requests\Client\SendOtpRequest;
 use Exception;
 class ForgotPasswordController extends Controller
 {
