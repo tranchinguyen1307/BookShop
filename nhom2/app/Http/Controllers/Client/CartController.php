@@ -34,12 +34,12 @@ class CartController extends Controller
         $product = Product::findOrFail($request->product_id);
         $quantityInCart = $cartItem ? $cartItem->quantity : 0;
         $maxQuantity = $product->quantity - $quantityInCart;
-        
-            if ($request->quantity > $maxQuantity) {
-                return response()->json([
-                    "message" => "Số lượng sản phẩm bạn muốn thêm vượt quá số lượng còn lại trong kho",
-                ], 400);
-            }
+
+        if ($request->quantity > $maxQuantity) {
+            return response()->json([
+                "message" => "Số lượng sản phẩm bạn muốn thêm vượt quá số lượng còn lại trong kho",
+            ], 400);
+        }
 
         if ($cartItem) {
             $cartItem->increment("quantity", $quantity);
