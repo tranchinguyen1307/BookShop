@@ -31,9 +31,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
                     </form>
-                    <a href="{{ route('google.login') }}" class="btn btn-danger">
+                    {{-- <a href="{{ route('google.login') }}" class="btn btn-danger">
                         <i class="ion-logo-google"></i> Đăng nhập bằng Google
-                    </a>
+                    </a> --}}
                     <div class="text-center mt-3">
                         <a href="{{ route('register') }}">Chưa có tài khoản? Đăng ký</a>
                     </div>
