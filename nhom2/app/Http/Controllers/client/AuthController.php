@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\client;
+namespace App\Http\Controllers\Client;
 
-use App\Http\Requests\client\LoginRequest;
-use App\Http\Requests\client\RegisterRequest;
+use App\Http\Requests\Client\LoginRequest;
+use App\Http\Requests\Client\RegisterRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\client;
 
 
-use App\Http\Requests\client\UpdateUserRequest;
-use App\Http\Requests\client\ChangePasswordRequest;
+use App\Http\Requests\Client\UpdateUserRequest;
+use App\Http\Requests\Client\ChangePasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
