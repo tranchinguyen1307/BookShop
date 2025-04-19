@@ -26,8 +26,6 @@ class ProductDetailController extends Controller
             ->limit(6)
             ->get();
 
-        $rating = $product->reviews()->avg('rating'); 
-        $totalReviews = $product->reviews()->count(); 
 
         return view(
             'client.pages.productdetail',
@@ -35,8 +33,6 @@ class ProductDetailController extends Controller
                 'product' => $product,
                 'relatedProducts' => $relatedProducts,
                 'MaxQuantity' => $maxQuantity,
-                'rating' => $rating,
-                'totalReviews' => $totalReviews
             ]
         );
     }
