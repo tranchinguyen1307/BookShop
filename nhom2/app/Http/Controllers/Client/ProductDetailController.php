@@ -26,9 +26,8 @@ class ProductDetailController extends Controller
             ->limit(6)
             ->get();
 
-        $rating = $product->reviews()->avg('rating'); // Điểm trung bình
-
-        $totalReviews = $product->reviews()->count(); // Tổng số đánh giá
+        $rating = $product->reviews()->avg('rating'); 
+        $totalReviews = $product->reviews()->count(); 
 
         return view(
             'client.pages.productdetail',

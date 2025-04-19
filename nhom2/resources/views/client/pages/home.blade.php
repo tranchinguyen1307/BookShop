@@ -160,12 +160,17 @@
                                 @endif
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($product->average_rating >= $i)
+                                        <small class="fas fa-star text-primary mr-1"></small>
+                                    @elseif ($product->average_rating >= ($i - 0.5))
+                                        <small class="fas fa-star-half-alt text-primary mr-1"></small>
+                                    @else
+                                        <small class="far fa-star text-primary mr-1"></small>
+                                    @endif
+                                @endfor
+
+                                <small>({{$product->reviews_count }})</small>
                             </div>
                         </div>
                     </div>
@@ -245,12 +250,17 @@
                                 @endif
                             </div>
                             <div class="d-flex align-items-center justify-content-center mb-1">
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small class="fa fa-star text-primary mr-1"></small>
-                                <small>(99)</small>
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($product->average_rating >= $i)
+                                        <small class="fas fa-star text-primary mr-1"></small>
+                                    @elseif ($product->average_rating >= ($i - 0.5))
+                                        <small class="fas fa-star-half-alt text-primary mr-1"></small>
+                                    @else
+                                        <small class="far fa-star text-primary mr-1"></small>
+                                    @endif
+                                @endfor
+
+                                <small>({{$product->reviews_count }})</small>
                             </div>
                         </div>
                     </div>
