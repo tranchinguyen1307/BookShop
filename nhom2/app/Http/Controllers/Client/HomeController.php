@@ -10,10 +10,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $recent_products = Product::orderBy('created_at', 'desc')
+        $recent_products = Product::where('quantity', '>', 0)
+            ->orderBy('created_at', 'desc')
             ->limit(8)
             ->get();
-        $sale_products = Product::whereNotNull('sale_price')
+        $sale_products = Product::where('quantity', '>', 0)
+            ->whereNotNull('sale_price')
             ->limit(8)
             ->get();
         $categories = Category::withCount('products')->limit(8)->get();
