@@ -14,8 +14,16 @@
                         <td class="p-3">{{ $order->user->name }}</td>
                     </tr>
                     <tr>
+                        <th class="bg-gray-100 p-3 font-medium text-gray-700">Email</th>
+                        <td class="p-3">{{ $order->user->email }}</td>
+                    </tr>
+                    <tr>
                         <th class="bg-gray-100 p-3 font-medium text-gray-700">Số điện thoại: </th>
                         <td class="p-3">{{ $order->phone }}</td>
+                    </tr>
+                    <tr>
+                        <th class="bg-gray-100 p-3 font-medium text-gray-700">Thời gian</th>
+                        <td class="p-3">{{ $order->created_at->locale('vi')->translatedFormat('M d, Y H:i:s') }}</td>
                     </tr>
                     <tr>
                         <th class="bg-gray-100 p-3 font-medium text-gray-700">Địa chỉ</th>
