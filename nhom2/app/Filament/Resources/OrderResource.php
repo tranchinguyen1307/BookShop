@@ -34,7 +34,6 @@ class OrderResource extends Resource
             ->columns([
                 TextColumn::make('id')->label('Mã đơn')->sortable(),
                 TextColumn::make('user.name')->label('Khách hàng')->searchable(),
-                TextColumn::make('address')->label('Địa chỉ'),
                 TextColumn::make('total_price')->label('Tổng tiền')->money('VND'),
                 TextColumn::make('payment_method')
                     ->label('Thanh toán')
@@ -69,6 +68,7 @@ class OrderResource extends Resource
                             0 => 'Chờ xác nhận',
                             1 => 'Đã xác nhận',
                             2 => 'Đã thanh toán',
+                            3 => 'Đã nhận hàng',
                             4 => 'Đã hủy',
                         ];
 
