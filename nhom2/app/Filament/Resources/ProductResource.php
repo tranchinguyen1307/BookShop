@@ -84,7 +84,7 @@ class ProductResource extends Resource
                                 TextInput::make('quantity')
                                     ->label('Số lượng')
                                     ->numeric()
-                                    ->rule('required'),
+                                    ->rule(['required','min:1']),
                                 FileUpload::make('image')
                                     ->label('Hình ảnh')
                                     ->directory('products')
@@ -109,7 +109,11 @@ class ProductResource extends Resource
                     ->label('Tiêu đề')
                     ->searchable(),
                 TextColumn::make('category.name')
-                    ->label('Danh mục'),
+                    ->label('Danh mục')
+                    ->getStateUsing(function ($record) {
+                        return $record->category->name ?? 'Chưa phân loại';
+                    }),
+
                 TextColumn::make('author')
                     ->label('Tác giả'),
                 ImageColumn::make('image')
@@ -119,9 +123,9 @@ class ProductResource extends Resource
                     ->formatStateUsing(
                         fn($record) =>
                         $record->sale_price
-                        ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
+                            ? "<strong style='color:red;'>" . number_format($record->sale_price) . " VND</strong><br>
                                <s style='color:green;'>" . number_format($record->unit_price) . " VND</s>"
-                        : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
+                            : "<strong style='color:green;'>" . number_format($record->unit_price) . " VND</strong>"
 
                     )
                     ->html()
