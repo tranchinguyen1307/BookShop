@@ -5,9 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
+    use SoftDeletes;
     protected $fillable =
     [
         'name',
@@ -50,5 +52,14 @@ class Product extends Model
     public function reviewsCount(): Attribute
     {
         return Attribute::get(fn() => $this->reviews()->count());
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($product) {
+            if (! $product->isForceDeleting()) {
+                Cart::where('product_id', $product->id)->delete();
+            }
+        });
     }
 }
