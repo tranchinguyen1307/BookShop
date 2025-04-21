@@ -22,9 +22,9 @@
         <ul class="nav nav-tabs mb-3" id="orderTab" role="tablist">
             @foreach ($groupedOrders as $status => $orders)
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link @if ($loop->first) active @endif" id="status-{{ $status }}-tab"
-                        data-bs-toggle="tab" href="#status-{{ $status }}" role="tab">
-                        {{ getStatusLabel($status) }} ({{ $orders->count() }})
+                    <a class="nav-link @if ($loop->first) active @endif" id="status-{{ $status }}-tab" data-bs-toggle="tab"
+                        href="#status-{{ $status }}" role="tab">
+                        {{ getStatusLabel($status) }} ({{ $orders->total() }})
                     </a>
                 </li>
             @endforeach
@@ -32,8 +32,7 @@
 
         <div class="tab-content" id="orderTabContent">
             @foreach ($groupedOrders as $status => $orders)
-                <div class="tab-pane fade @if ($loop->first) show active @endif"
-                    id="status-{{ $status }}" role="tabpanel">
+                <div class="tab-pane fade @if ($loop->first) show active @endif" id="status-{{ $status }}" role="tabpanel">
                     @if ($orders->isEmpty())
                         <p class="text-center my-4">Không có đơn hàng.</p>
                     @else
@@ -46,7 +45,7 @@
                                             $firstProduct = $order->orderDetails->first()?->product;
                                             $firstImage = $firstProduct?->image;
                                         @endphp
-                                    
+
                                         @if ($firstImage)
                                             <img src="{{ asset('storage/' . $firstImage) }}" class="img-fluid rounded"
                                                 style="max-height: 100px;" alt="product">
@@ -55,50 +54,166 @@
                                                 style="max-height: 100px;" alt="no image">
                                         @endif
                                     </div>
-                                    
 
                                     <!-- Thông tin đơn hàng -->
                                     <div class="col-md-7">
                                         <h5>Đơn hàng #{{ $order->order_code }}</h5>
                                         <p class="mb-1 text-muted">🗓 Ngày đặt:
-                                            {{ $order->created_at->format('d/m/Y H:i') }}</p>
+                                            {{ $order->created_at->format('d/m/Y H:i') }}
+                                        </p>
                                         <p class="mb-1 text-danger fw-bold">💰 Tổng tiền:
                                             {{ number_format($order->total_price, 0, ',', '.') }}đ
                                         </p>
                                         <p class="mb-1 text-muted"> Địa chỉ:
-                                            {{ $order->address }}</p>
+                                            {{ $order->address }}
+                                        </p>
                                     </div>
 
                                     <!-- Nút hành động -->
                                     <div class="col-md-3 text-end">
                                         <div class="d-flex justify-content-end gap-2">
-                                            <a href="{{ route('orders.show', $order->id) }}"
-                                                class="btn btn-outline-success mx-1">
+                                            <a href="{{ route('orders.show', $order->id) }}" class="btn btn-outline-success mx-1">
                                                 Xem chi tiết
                                             </a>
 
                                             @if ($order->status == 0)
-                                                <form action="{{ route('orders.cancel', $order->id) }}" method="POST"
-                                                    onsubmit="return confirm('Bạn có chắc muốn hủy đơn hàng này không?')">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <button type="submit" class="btn btn-outline-danger">
-                                                        Hủy đơn hàng
-                                                    </button>
-                                                </form>
+                                                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                                    data-bs-target="#cancelOrderModal{{ $order->id }}">
+                                                    Hủy đơn hàng
+                                                </button>
                                             @endif
                                         </div>
                                     </div>
+                                </div>
+                            </div>
 
+                            <!-- Modal Hủy đơn hàng -->
+                            <div class="modal fade" id="cancelOrderModal{{ $order->id }}" tabindex="-1"
+                                aria-labelledby="cancelOrderModalLabel{{ $order->id }}" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelOrderModalLabel{{ $order->id }}">
+                                                Hủy đơn hàng #{{ $order->order_code }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close">X</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{{ route('orders.cancel', $order->id) }}" method="POST"
+                                                id="cancelForm{{ $order->id }}">
+                                                @csrf
+                                                @method('PUT')
 
+                                                <div class="mb-3">
+                                                    <label for="cancellation_reason" class="form-label">Lý do hủy đơn hàng</label>
+                                                    <select name="cancellation_reason" id="cancellation_reason{{ $order->id }}"
+                                                        class="form-select reason-select" data-order-id="{{ $order->id }}">
+                                                        <option value="">Chọn lý do</option>
+                                                        <option value="Tôi muốn đổi địa chỉ">Tôi muốn đổi địa chỉ </option>
+                                                        <option value="Tôi không muốn mua">Tôi không muốn mua </option>
+                                                        <option value="Tôi muốn mua cái khác">Tôi muốn mua cái khác </option>
+                                                        <option value="Khác">Khác</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-3 other-reason" id="otherReasonDiv{{ $order->id }}"
+                                                    style="display: none;">
+                                                    <label for="other_reason{{ $order->id }}" class="form-label">Vui lòng nhập lý do
+                                                        khác</label>
+                                                    <textarea name="other_reason" id="other_reason{{ $order->id }}" class="form-control"
+                                                        rows="3"></textarea>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
+                                        </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         @endforeach
+
+                        <!-- PHÂN TRANG -->
+                        <div class="mt-3">
+                            {{ $orders->links() }}
+                        </div>
                     @endif
                 </div>
             @endforeach
         </div>
-
-
     </div>
+
+    <!-- JavaScript: Hiển thị lý do khác + giữ tab đang active sau phân trang -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Hiển thị ô nhập lý do khi chọn "Khác"
+            document.querySelectorAll('.reason-select').forEach(function (select) {
+                select.addEventListener('change', function () {
+                    const orderId = this.dataset.orderId;
+                    const otherReasonDiv = document.getElementById(`otherReasonDiv${orderId}`);
+                    otherReasonDiv.style.display = (this.value === 'Khác') ? 'block' : 'none';
+                });
+            });
+
+            // Giữ tab đang mở sau phân trang
+            const urlParams = new URLSearchParams(window.location.search);
+            let activeTab = null;
+            for (const [key, value] of urlParams.entries()) {
+                if (key.startsWith('page_')) {
+                    activeTab = key.replace('page_', '');
+                    break;
+                }
+            }
+
+            // Cập nhật lại tab hiện tại khi phân trang
+            if (activeTab) {
+                const triggerEl = document.querySelector(`#status-${activeTab}-tab`);
+                if (triggerEl) {
+                    new bootstrap.Tab(triggerEl).show();
+                }
+            } else {
+                // Nếu không có trang phân trang, giữ tab đầu tiên
+                const firstTab = document.querySelector('.nav-link');
+                if (firstTab) {
+                    new bootstrap.Tab(firstTab).show();
+                }
+            }
+        });
+
+        // Hiển thị ô nhập lý do khi chọn "Khác"
+        document.querySelectorAll('.reason-select').forEach(function (select) {
+            select.addEventListener('change', function () {
+                const orderId = this.dataset.orderId;
+                const otherReasonDiv = document.getElementById(`otherReasonDiv${orderId}`);
+                otherReasonDiv.style.display = (this.value === 'Khác') ? 'block' : 'none';
+            });
+        });
+
+        // Giữ tab đang mở sau phân trang
+        const urlParams = new URLSearchParams(window.location.search);
+        let activeTab = null;
+        for (const [key, value] of urlParams.entries()) {
+            if (key.startsWith('page_')) {
+                activeTab = key.replace('page_', '');
+                break;
+            }
+        }
+
+        if (activeTab) {
+            const triggerEl = document.querySelector(`#status-${activeTab}-tab`);
+            if (triggerEl) {
+                new bootstrap.Tab(triggerEl).show();
+            }
+        }
+    </script>
+    <style>
+        nav[role="navigation"] svg {
+            width: 0 !important;
+            height: 0 !important;
+            display: none !important;
+        }
+    </style>
+
+
 @endsection

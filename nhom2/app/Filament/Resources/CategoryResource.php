@@ -43,8 +43,7 @@ class CategoryResource extends Resource
                     ->required()
                     ->label('Hình ảnh danh mục')
             ])
-            ->columns(1);
-        ;
+            ->columns(1);;
     }
 
     public static function table(Table $table): Table
@@ -59,11 +58,14 @@ class CategoryResource extends Resource
                     ->label('Hình ảnh'),
 
             ])
-            ->filters([
-
-            ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label(''),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
+                Tables\Actions\DeleteAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

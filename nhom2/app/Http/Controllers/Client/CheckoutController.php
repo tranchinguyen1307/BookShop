@@ -191,7 +191,7 @@ class CheckoutController extends Controller
                 'user_id' => $user->id,
                 'total_price' => $totalPrice + $shippingFee,
                 'shipping_fee' => $shippingFee,
-                'status' => 1, // Đơn hàng đã thanh toán
+                'status' => 2, // Đơn hàng đã thanh toán
                 'address' => $address,
                 'payment_method' => 2, // Momo
                 'phone' => $phone,

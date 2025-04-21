@@ -6,22 +6,41 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrderController extends Controller
 {
+
     public function history()
     {
-        $orders = Order::where('user_id', auth()->id())->get()->groupBy('status');
-
+        $orders = Order::where('user_id', auth()->id())
+            ->with('orderDetails.product')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('status');
 
         $orderedStatuses = collect([0, 1, 2, 3, 4])->mapWithKeys(function ($status) use ($orders) {
-            return [$status => $orders->get($status, collect())];
+            $perPage = 5;
+            $currentPage = request()->get("page_{$status}", 1);
+            $items = $orders->get($status, collect());
+            $pagedItems = $items->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $paginator = new LengthAwarePaginator(
+                $pagedItems,
+                $items->count(),
+                $perPage,
+                $currentPage,
+                ['pageName' => "page_{$status}", 'path' => request()->url()]
+            );
+
+            return [$status => $paginator];
         });
 
         return view('client.pages.orders.order-history', [
             'groupedOrders' => $orderedStatuses,
         ]);
     }
+
 
     // Xem chi tiết một đơn hàng
     public function show($id)
@@ -36,15 +55,23 @@ class OrderController extends Controller
         return view('client.pages.orders.order-details', compact('order'));
     }
 
-    public function cancel(Order $order)
+    public function cancel(Order $order, Request $request)
     {
         // Kiểm tra trạng thái đơn hàng
         if ($order->status == 0) {
+            // Kiểm tra nếu có lý do hủy được gửi lên
+            $validatedData = $request->validate([
+                'cancellation_reason' => 'required|string|max:255',
+            ]);
+
             // Sử dụng transaction để đảm bảo tính nhất quán
             DB::beginTransaction();
             try {
                 // Cập nhật trạng thái đơn hàng thành đã hủy (status = 4)
                 $order->status = 4;
+
+                // Lưu lý do hủy vào cơ sở dữ liệu
+                $order->cancellation_reason = $validatedData['cancellation_reason'];
 
                 // Duyệt qua từng chi tiết đơn hàng (order_details) để hoàn lại số lượng
                 foreach ($order->orderDetails as $detail) {
@@ -68,6 +95,7 @@ class OrderController extends Controller
 
         return redirect()->back()->with('error', 'Không thể hủy đơn hàng ở trạng thái hiện tại.');
     }
+
 
 
 

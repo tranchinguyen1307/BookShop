@@ -2,8 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\OrderResource\Pages;
-use App\Models\Order;
+use App\Models\Order;  // Đảm bảo dòng này được thêm vào
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -12,9 +11,14 @@ use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Notifications\Notification;
-use Livewire\Livewire;
-use App\Mail\OrderCancelledMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderCancelledMail;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Filters\Filter; // Đảm bảo dòng này cũng có
+use App\Filament\Resources\OrderResource\Pages\ListOrders; // Đảm bảo thêm dòng này
+use App\Filament\Resources\OrderResource\Pages\ViewOrder; // Đảm bảo thêm dòng này
 
 class OrderResource extends Resource
 {
@@ -32,9 +36,8 @@ class OrderResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('id')->label('Mã đơn')->sortable(),
+                TextColumn::make('order_code')->label('Mã đơn')->sortable()->searchable(),
                 TextColumn::make('user.name')->label('Khách hàng')->searchable(),
-                TextColumn::make('address')->label('Địa chỉ'),
                 TextColumn::make('total_price')->label('Tổng tiền')->money('VND'),
                 TextColumn::make('payment_method')
                     ->label('Thanh toán')
@@ -52,13 +55,30 @@ class OrderResource extends Resource
                         $statusText = [
                             0 => 'Chờ xác nhận',
                             1 => 'Đã xác nhận',
-                            2 => 'Đã thanh toán ',
+                            2 => 'Đã thanh toán',
                             3 => 'Đã nhận hàng',
                             4 => 'Đã hủy',
                         ];
                         return $statusText[$state] ?? 'Không rõ';
                     }),
-                TextColumn::make('created_at')->label('Ngày tạo')->dateTime(),
+                TextColumn::make('created_at')
+                    ->label('Ngày tạo')
+                    ->dateTime()
+                    ->sortable()
+                    ->default('desc'),
+            ])
+            ->filters([
+                // Lọc theo trạng thái
+                SelectFilter::make('status')
+                    ->label('Trạng thái')
+                    ->options([
+                        0 => 'Chờ xác nhận',
+                        1 => 'Đã xác nhận',
+                        2 => 'Đã thanh toán',
+                        3 => 'Đã nhận hàng',
+                        4 => 'Đã hủy',
+                    ])
+                    ->placeholder('Tất cả trạng thái'),
             ])
             ->actions([
                 Action::make('updateStatus')
@@ -69,6 +89,7 @@ class OrderResource extends Resource
                             0 => 'Chờ xác nhận',
                             1 => 'Đã xác nhận',
                             2 => 'Đã thanh toán',
+                            3 => 'Đã nhận hàng',
                             4 => 'Đã hủy',
                         ];
 
@@ -132,7 +153,6 @@ class OrderResource extends Resource
             ]);
     }
 
-
     public static function getRelations(): array
     {
         return [];
@@ -141,8 +161,8 @@ class OrderResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListOrders::route('/'),
-            'view' => Pages\ViewOrder::route('/{record}'),
+            'index' => ListOrders::route('/'),
+            'view' => ViewOrder::route('/{record}'),
         ];
     }
 

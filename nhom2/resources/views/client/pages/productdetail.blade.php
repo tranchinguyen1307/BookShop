@@ -47,16 +47,16 @@
                     <div class="d-flex mb-3">
                         <div class="text-primary mr-2">
                             @for ($i = 1; $i <= 5; $i++)
-                                @if ($rating >= $i)
+                                @if ($product->average_rating >= $i)
                                     <small class="fas fa-star"></small>
-                                @elseif ($rating >= ($i - 0.5))
+                                @elseif ($product->average_rating >= ($i - 0.5))
                                     <small class="fas fa-star-half-alt"></small> 
                                 @else
                                     <small class="far fa-star"></small> 
                                 @endif
                             @endfor
                         </div>
-                        <small class="pt-1">({{ $totalReviews }} Đánh giá)</small>
+                        <small class="pt-1">({{$product->reviews_count }} Đánh giá)</small>
                     </div>
                     
                     <h3 class="font-weight-semi-bold mb-1">
@@ -181,12 +181,17 @@
                                         @endif
                                     </div>
                                     <div class="d-flex align-items-center justify-content-center mb-1">
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small class="fa fa-star text-primary mr-1"></small>
-                                        <small>(99)</small>
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            @if ($relatedProduct->average_rating >= $i)
+                                                <small class="fas fa-star text-primary mr-1"></small>
+                                            @elseif ($relatedProduct->average_rating >= ($i - 0.5))
+                                                <small class="fas fa-star-half-alt text-primary mr-1"></small>
+                                            @else
+                                                <small class="far fa-star text-primary mr-1"></small>
+                                            @endif
+                                        @endfor
+        
+                                        <small>({{$relatedProduct->reviews_count }})</small>
                                     </div>
                                 </div>
                             </div>
