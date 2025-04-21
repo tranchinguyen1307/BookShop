@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\View\Components\client\navbar;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\BlogDetailController;
+use App\Http\Controllers\Client\CommentController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -23,6 +24,7 @@ Route::get('/product/{id}', [ProductDetailController::class, 'show'])->name('pro
 Route::get('/contact', function () {
     return view('client.pages.contact');
 })->name('contact');
+Route::resource('/comments', CommentController::class)->only(['store', 'update', 'destroy']);
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/search', [navbar::class, 'search'])->name('search');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
