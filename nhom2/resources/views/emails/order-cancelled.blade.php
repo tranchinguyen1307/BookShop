@@ -41,7 +41,7 @@
 
     <div class="cancellation-info">
         <p><strong>Lý do hủy đơn hàng (do quản trị viên):</strong></p>
-        <p>{{ $order->cancel_reason ?? 'Không có lý do' }}</p>
+        <p>{{ $order->cancellation_reason ?? 'Không có lý do' }}</p>
     </div>
 
     <p>Nếu bạn có bất kỳ thắc mắc nào, xin vui lòng liên hệ lại với chúng tôi để được hỗ trợ.</p>
