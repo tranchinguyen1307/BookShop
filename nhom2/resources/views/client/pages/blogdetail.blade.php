@@ -23,45 +23,83 @@
                 <div class="bg-white p-4 shadow-sm rounded">
                     <h3 class="mb-3">{{ $blog->title }}</h3>
                     <p class="text-muted small mb-3">Đăng ngày: {{ $blog->created_at->format('d/m/Y') }}</p>
-                    <img src="{{ url('storage/' . $blog->image) }}" class="img-fluid rounded mb-4" alt="{{ $blog->title }}">
+                    <img src="{{ url('storage/' . $blog->image) }}" class="img-fluid rounded mb-4"
+                        alt="{{ $blog->title }}">
                     <div class="blog-content">
                         {!! $blog->content !!}
                     </div>
                 </div>
 
+                @auth
+                    <!-- Bình luận -->
+                    <div class="bg-white p-4 shadow-sm rounded mt-4">
+                        <h5 class="mb-4">Bình luận</h5>
 
-                <!-- Bình luận -->
-                <div class="bg-white p-4 shadow-sm rounded mt-4">
-                    <h5 class="mb-4">Bình luận</h5>
+                        <!-- Form bình luận -->
+                        <form action="{{ route('comments.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="blog_id" value="{{ $blog->id }}">
+                            <div class="form-group">
+                                <label for="comment">Nội dung bình luận</label>
+                                <textarea name="comment" id="comment" rows="4" class="form-control" required></textarea>
 
-                    <!-- Form bình luận -->
-                    <form action="" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="name">Tên của bạn</label>
-                            <input type="text" name="name" id="name" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="comment">Nội dung bình luận</label>
-                            <textarea name="comment" id="comment" rows="4" class="form-control" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary mt-2">Gửi bình luận</button>
-                    </form>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2">Gửi bình luận</button>
+                        </form>
 
-                    <!-- Danh sách bình luận -->
-                    <hr class="my-4">
-                    <h6 class="mb-3">Các bình luận trước</h6>
+                        @if (session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>  
+                        @endif
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+                        <!-- Danh sách bình luận -->
+                        <hr class="my-4">
+                        <h6 class="mb-3">Các bình luận trước</h6>
+
+                        @foreach ($blog->comments as $comment)
+                            <div class="mb-3" id="comment-box-{{ $comment->id }}">
+                                <strong>{{ $comment->user->name }}</strong>
+                                <small class="text-muted d-block">{{ $comment->created_at->diffForHumans() }}</small>
+
+                                @auth
+                                    @if (Auth::id() === $comment->user_id)
+                                        <div id="comment-content-{{ $comment->id }}">
+                                            <p class="mb-0">{{ $comment->content }}</p>
+                                            <button onclick="showEditForm({{ $comment->id }}, '{{ $comment->content }}')"
+                                                class="btn btn-sm btn-secondary mt-1">Sửa</button>
+
+                                            <form action="{{ route('comments.destroy', $comment->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger mt-1"
+                                                    onclick="return confirm('Xóa bình luận này?')">Xóa</button>
+                                            </form>
+                                        </div>
+                                    @else
+                                        <p class="mb-0">{{ $comment->content }}</p>
+                                    @endif
+                                @else
+                                    <p class="mb-0">{{ $comment->content }}</p>
+                                @endauth
+                            </div>
+                        @endforeach
 
 
-                    <div class="mb-3">
-                        <strong></strong>
-                        <small class="text-muted d-block"></small>
-                        <p class="mb-0"></p>
+                        @if ($blog->comments->isEmpty())
+                            <p class="text-muted">Chưa có bình luận nào.</p>
+                        @endif
+
+
                     </div>
-
-                    <p class="text-muted">Chưa có bình luận nào.</p>
-
-                </div>
+                @else
+                    <p class="text-muted">Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để bình luận.</p>
+                @endauth
 
             </div>
 
@@ -90,3 +128,58 @@
     </div>
 
 @endsection
+<script>
+    function showEditForm(id, content) {
+        const box = document.getElementById('comment-box-' + id);
+        const formHtml = `
+            <form onsubmit="return updateComment(event, ${id})" class="mt-2">
+                <textarea id="edit-content-${id}" class="form-control" rows="3">${content}</textarea>
+                <button type="submit" class="btn btn-sm btn-primary mt-2">Cập nhật</button>
+                <button type="button" onclick="cancelEdit(${id}, '${content}')" class="btn btn-sm btn-secondary mt-2">Hủy</button>
+            </form>
+        `;
+        document.getElementById('comment-content-' + id).innerHTML = formHtml;
+    }
+
+    function updateComment(event, id) {
+        event.preventDefault();
+        const content = document.getElementById('edit-content-' + id).value;
+
+        fetch('/comments/' + id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    comment: content
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const box = document.getElementById('comment-content-' + id);
+                box.innerHTML = `
+                <p class="mb-0">${data.content}</p>
+                <button onclick="showEditForm(${id}, '${data.content}')" class="btn btn-sm btn-secondary mt-1">Sửa</button>
+                <form action="/comments/${id}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-danger mt-1" onclick="return confirm('Xóa bình luận này?')">Xóa</button>
+                </form>
+            `;
+            });
+    }
+
+    function cancelEdit(id, content) {
+        const box = document.getElementById('comment-content-' + id);
+        box.innerHTML = `
+            <p class="mb-0">${content}</p>
+            <button onclick="showEditForm(${id}, '${content}')" class="btn btn-sm btn-secondary mt-1">Sửa</button>
+            <form action="/comments/${id}" method="POST" class="d-inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger mt-1" onclick="return confirm('Xóa bình luận này?')">Xóa</button>
+            </form>
+        `;
+    }
+</script>
