@@ -77,7 +77,7 @@
                         </p>
 
                         <p class="mb-2">
-                            <strong>Thể loại:</strong> <span class="text-muted">{{$product->category->name}}</span>
+                            <strong>Thể loại:</strong> <span class="text-muted"> {{ $product->category ? $product->category->name : 'Chưa phân loại' }}</span>
                         </p>
                         <p class="mb-3">
                             <strong>Mô tả:</strong>
