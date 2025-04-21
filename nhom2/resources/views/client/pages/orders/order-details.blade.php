@@ -40,10 +40,11 @@
                         <p class="mb-1">Thành tiền:
                             <strong>{{ number_format($item->price * $item->quantity, 0, ',', '.') }}đ</strong>
                         </p>
-                        <p class="mb-0">
+                        <p class="mb-1">
                             Trạng thái:
                             <span class="badge {{ $status['class'] }}">{{ $status['label'] }}</span>
                         </p>
+
                     </div>
                     @if($order->status == 3 && !$item->alreadyReviewed)
                         <div class=" col-md-2">
@@ -59,9 +60,13 @@
         @endforeach
         <div class="mt-4 d-flex justify-content-between align-items-center flex-wrap">
             <div>
+                <h6 class="mb-1">COD:
+                    <strong>{{ number_format($order->shipping_fee, 0, ',', '.') }}đ</strong>
+                </h6>
                 <h5>Tổng cộng:
                     <span class="text-danger">{{ number_format($order->total_price, 0, ',', '.') }}đ</span>
                 </h5>
+
                 <a href="{{ route('orders.history') }}" class="btn btn-secondary mt-2">← Quay lại lịch sử</a>
             </div>
 

@@ -10,6 +10,9 @@
     @endif
     <div class="container">
         <h4>Xác Nhận Xóa Tài Khoản</h4>
+        <span class="text-danger">
+            Hành động này không thể quay lại. Bạn có chắc chắn muốn xóa tài khoản của mình không?
+        </span>
         <form action="{{ route('account.destroy') }}" method="POST">
             @csrf
             @method('DELETE')

@@ -146,7 +146,8 @@
                                         Tất cả
                                     </a>
                                 @foreach ($blogCategories as $category)
-                                    <a href="" class="dropdown-item">
+                                    <a href="{{ route('blog', ['blogcategory_id' => $category->id]) }}"
+                                        class="dropdown-item">
                                         {{ $category->name }}
                                     </a>
                                 @endforeach
