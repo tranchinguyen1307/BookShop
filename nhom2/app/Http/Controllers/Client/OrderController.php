@@ -6,22 +6,41 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class OrderController extends Controller
 {
+
     public function history()
     {
-        $orders = Order::where('user_id', auth()->id())->get()->groupBy('status');
-
+        $orders = Order::where('user_id', auth()->id())
+            ->with('orderDetails.product')
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy('status');
 
         $orderedStatuses = collect([0, 1, 2, 3, 4])->mapWithKeys(function ($status) use ($orders) {
-            return [$status => $orders->get($status, collect())];
+            $perPage = 5;
+            $currentPage = request()->get("page_{$status}", 1);
+            $items = $orders->get($status, collect());
+            $pagedItems = $items->slice(($currentPage - 1) * $perPage, $perPage)->values();
+
+            $paginator = new LengthAwarePaginator(
+                $pagedItems,
+                $items->count(),
+                $perPage,
+                $currentPage,
+                ['pageName' => "page_{$status}", 'path' => request()->url()]
+            );
+
+            return [$status => $paginator];
         });
 
         return view('client.pages.orders.order-history', [
             'groupedOrders' => $orderedStatuses,
         ]);
     }
+
 
     // Xem chi tiết một đơn hàng
     public function show($id)
