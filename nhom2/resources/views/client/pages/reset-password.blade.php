@@ -5,7 +5,7 @@
         <h2>Đặt Lại Mật Khẩu</h2>
         <form action="{{ route('reset-password') }}" method="POST">
             @csrf
-            <input type="hidden" name="email" value="{{ $email }}">
+            <input type="hidden" name="email" value="{{ old('email', $email ?? '') }}">
             <div class="mb-3">
                 <label>Mật khẩu mới:</label>
                 <input type="password" name="password" class="form-control">
