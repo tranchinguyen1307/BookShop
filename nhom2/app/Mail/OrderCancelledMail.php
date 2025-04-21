@@ -28,7 +28,7 @@ class OrderCancelledMail extends Mailable
             ->with([
                 'order' => $this->order,
                 'customerName' => $this->order->user->name,
-                'cancellation_reason' => $this->order->cancellation_reason, // 💥 thêm dòng này
+                'cancellation_reason' => $this->order->cancellation_reason,
             ]);
     }
 
