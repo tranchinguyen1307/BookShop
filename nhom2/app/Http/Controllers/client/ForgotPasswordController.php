@@ -68,10 +68,15 @@ class ForgotPasswordController extends Controller
         }
     }
     // Hiển thị form đặt lại mật khẩu
-    public function showResetPasswordForm()
+    public function showResetPasswordForm(Request $request)
     {
-        return view('client.pages.reset-password', ['email' => session('email')]);
+        // Ưu tiên lấy email từ session flash hoặc từ request
+        $email = session('email') ?? $request->query('email');
+
+        return view('client.pages.reset-password', compact('email'));
     }
+
+
 
     // Đặt lại mật khẩu
     public function resetPassword(ResetPasswordRequest $request)
